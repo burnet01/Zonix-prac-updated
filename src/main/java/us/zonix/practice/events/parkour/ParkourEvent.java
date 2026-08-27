@@ -71,9 +71,8 @@ public class ParkourEvent extends PracticeEvent<ParkourPlayer>
     
     @Override
     public Consumer<Player> onDeath() {
-        final String message;
         return player -> {
-            message = ChatColor.RED + "[Event] " + ChatColor.RED + player.getName() + ChatColor.GRAY + " has left the game.";
+            final String message = ChatColor.RED + "[Event] " + ChatColor.RED + player.getName() + ChatColor.GRAY + " has left the game.";
             this.sendMessage(message);
         };
     }

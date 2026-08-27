@@ -195,8 +195,8 @@ public class TournamentManager
                 final Player player = Bukkit.getPlayer(uuid);
                 if (player != null) {
                     player.sendMessage(ChatColor.RED + "The tournament has force ended.");
-                    final Tournament tournament2;
-                    final Player player2;
+                    final Tournament tournament2 = tournament;
+                    final Player player2 = player;
                     this.plugin.getServer().getScheduler().runTaskLater((Plugin)this.plugin, () -> {
                         if (tournament2.getTournamentState() == TournamentState.FIGHTING) {
                             this.plugin.getMatchManager().removeFighter(player2, this.plugin.getPlayerManager().getPlayerData(player2.getUniqueId()), false);

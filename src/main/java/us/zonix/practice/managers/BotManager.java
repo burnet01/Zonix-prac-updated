@@ -96,7 +96,7 @@ public class BotManager
         }
         final Player player = Bukkit.getPlayer(uuid);
         if (player != null) {
-            final Player player2;
+            final Player player2 = player;
             Bukkit.getScheduler().runTaskLater((Plugin)this.plugin, () -> {
                 this.plugin.getPlayerManager().sendToSpawnAndReset(player2);
                 player2.sendMessage(ChatColor.YELLOW + "You " + ChatColor.GREEN.toString() + ChatColor.BOLD + "WON" + ChatColor.YELLOW.toString() + " against the training bot.");

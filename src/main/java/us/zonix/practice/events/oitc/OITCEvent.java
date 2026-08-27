@@ -81,27 +81,17 @@ public class OITCEvent extends PracticeEvent<OITCPlayer>
     
     @Override
     public Consumer<Player> onDeath() {
-        final OITCPlayer data;
-        String deathMessage;
-        final OITCPlayer killerData;
-        final Player killer;
-        final int count;
-        final FireworkEffect fireworkEffect;
-        String string;
-        final StringBuilder sb;
-        final PlayerData winnerData;
-        final String announce;
-        final BukkitTask respawnTask;
         return player -> {
-            data = this.getPlayer(player);
+            final OITCPlayer data = this.getPlayer(player);
+            String deathMessage;
             if (data != null) {
                 if (data.getState() != OITCPlayer.OITCState.WAITING) {
                     if (data.getState() == OITCPlayer.OITCState.FIGHTING || data.getState() == OITCPlayer.OITCState.PREPARING || data.getState() == OITCPlayer.OITCState.RESPAWNING) {
                         deathMessage = ChatColor.RED + "[Event] " + ChatColor.RED + player.getName() + "(" + data.getScore() + ")" + ChatColor.GRAY + " has been eliminated from the game.";
                         if (data.getLastKiller() != null) {
-                            killerData = data.getLastKiller();
-                            killer = this.getPlugin().getServer().getPlayer(killerData.getUuid());
-                            count = killerData.getScore() + 1;
+                            final OITCPlayer killerData = data.getLastKiller();
+                            final Player killer = this.getPlugin().getServer().getPlayer(killerData.getUuid());
+                            final int count = killerData.getScore() + 1;
                             killerData.setScore(count);
                             killer.getInventory().setItem(6, ItemUtil.createItem(Material.GLOWSTONE_DUST, ChatColor.YELLOW.toString() + ChatColor.BOLD + "Kills", (killerData.getScore() == 0) ? 1 : killerData.getScore()));
                             if (killer.getInventory().contains(Material.ARROW)) {
@@ -112,21 +102,15 @@ public class OITCEvent extends PracticeEvent<OITCPlayer>
                             }
                             killer.updateInventory();
                             killer.playSound(killer.getLocation(), Sound.NOTE_PLING, 1.0f, 1.0f);
-                            fireworkEffect = FireworkEffect.builder().withColor(Color.fromRGB(127, 56, 56)).withFade(Color.fromRGB(127, 56, 56)).with(FireworkEffect.Type.BALL).build();
+                            final FireworkEffect fireworkEffect = FireworkEffect.builder().withColor(Color.fromRGB(127, 56, 56)).withFade(Color.fromRGB(127, 56, 56)).with(FireworkEffect.Type.BALL).build();
                             PlayerUtil.sendFirework(fireworkEffect, player.getLocation().add(0.0, 1.5, 0.0));
                             data.setLastKiller(null);
-                            new StringBuilder().append(ChatColor.RED).append("[Event] ").append(ChatColor.RED).append(player.getName()).append("(").append(data.getScore()).append(")").append(ChatColor.GRAY).append(" has been killed");
-                            if (killer == null) {
-                                string = ".";
-                            }
-                            else {
-                                string = " by " + ChatColor.GREEN + killer.getName() + "(" + count + ")";
-                            }
-                            deathMessage = sb.append(string).toString();
+                            final String killedBy = (killer == null) ? "." : (" by " + ChatColor.GREEN + killer.getName() + "(" + count + ")");
+                            deathMessage = ChatColor.RED + "[Event] " + ChatColor.RED + player.getName() + "(" + data.getScore() + ")" + ChatColor.GRAY + " has been killed" + killedBy;
                             if (count == 25) {
-                                winnerData = Practice.getInstance().getPlayerManager().getPlayerData(killer.getUniqueId());
+                                final PlayerData winnerData = Practice.getInstance().getPlayerManager().getPlayerData(killer.getUniqueId());
                                 winnerData.setOitcEventWins(winnerData.getOitcEventWins() + 1);
-                                announce = ChatColor.DARK_RED + killer.getName() + ChatColor.WHITE + " has won our " + ChatColor.DARK_RED + "OITC" + ChatColor.WHITE + " event!";
+                                final String announce = ChatColor.DARK_RED + killer.getName() + ChatColor.WHITE + " has won our " + ChatColor.DARK_RED + "OITC" + ChatColor.WHITE + " event!";
                                 Bukkit.broadcastMessage(announce);
                                 this.gameTask.cancel();
                                 this.end();
@@ -146,7 +130,7 @@ public class OITCEvent extends PracticeEvent<OITCPlayer>
                                 });
                             }
                             else {
-                                respawnTask = new RespawnTask(player, data).runTaskTimerAsynchronously((Plugin)this.getPlugin(), 0L, 20L);
+                                final BukkitTask respawnTask = new RespawnTask(player, data).runTaskTimerAsynchronously((Plugin)this.getPlugin(), 0L, 20L);
                                 data.setRespawnTask(respawnTask);
                             }
                         }

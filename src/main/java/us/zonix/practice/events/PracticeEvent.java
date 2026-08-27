@@ -162,18 +162,13 @@ public abstract class PracticeEvent<K extends EventPlayer>
             if (waterDropEvent.getWaterCheckTask() != null) {
                 waterDropEvent.getWaterCheckTask().cancel();
             }
-            final WaterDropEvent waterDropEvent2;
-            final EditSession editSession;
-            final Iterator<Block> iterator4;
-            Block entry;
+            final WaterDropEvent waterDropEvent2 = waterDropEvent;
             TaskManager.IMP.async(() -> {
                 if (waterDropEvent2.getCuboid() != null) {
-                    editSession = new EditSessionBuilder(waterDropEvent2.getCuboid().getWorld().getName()).fastmode(true).allowedRegionsEverywhere().autoQueue(false).limitUnlimited().build();
-                    waterDropEvent2.getCuboid().iterator();
-                    while (iterator4.hasNext()) {
-                        entry = iterator4.next();
+                    final EditSession editSession = new EditSessionBuilder(waterDropEvent2.getCuboid().getWorld().getName()).fastmode(true).allowedRegionsEverywhere().autoQueue(false).limitUnlimited().build();
+                    for (final Block entry : waterDropEvent2.getCuboid()) {
                         try {
-                            editSession.setBlock(new Vector((double)entry.getLocation().getBlockX(), (double)entry.getLocation().getBlockY(), entry.getLocation().getZ()), new BaseBlock(35, 0));
+                            editSession.setBlock(new Vector(entry.getLocation().getBlockX(), entry.getLocation().getBlockY(), entry.getLocation().getZ()), new BaseBlock(35, 0));
                         }
                         catch (Exception ex) {}
                     }
@@ -186,7 +181,7 @@ public abstract class PracticeEvent<K extends EventPlayer>
             Bukkit.getScheduler().cancelTask(woolMixUpEvent.getTaskId());
             woolMixUpEvent.setTaskId(-1);
             woolMixUpEvent.setCurrentColor(-1);
-            final WoolMixUpEvent woolMixUpEvent2;
+            final WoolMixUpEvent woolMixUpEvent2 = woolMixUpEvent;
             Bukkit.getScheduler().runTaskLaterAsynchronously((Plugin)this.plugin, () -> woolMixUpEvent2.regenerateArena(woolMixUpEvent2.getBlocksRegen()), 20L);
         }
         else if (this instanceof LightsEvent) {

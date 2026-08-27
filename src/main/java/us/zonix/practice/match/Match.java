@@ -170,16 +170,8 @@ public class Match
     }
     
     public void broadcast(final Clickable message) {
-        final Stream<Player> stream;
-        this.teams.forEach(team -> {
-            team.alivePlayers();
-            Objects.requireNonNull(message);
-            stream.forEach(message::sendToPlayer);
-            return;
-        });
-        final Stream<Player> spectatorPlayers = this.spectatorPlayers();
-        Objects.requireNonNull(message);
-        spectatorPlayers.forEach(message::sendToPlayer);
+        this.teams.forEach(team -> team.alivePlayers().forEach(player -> message.sendToPlayer(player)));
+        this.spectatorPlayers().forEach(message::sendToPlayer);
     }
     
     public Stream<Player> spectatorPlayers() {

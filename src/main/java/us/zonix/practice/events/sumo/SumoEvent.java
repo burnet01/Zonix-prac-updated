@@ -78,21 +78,14 @@ public class SumoEvent extends PracticeEvent<SumoPlayer>
     
     @Override
     public Consumer<Player> onDeath() {
-        final SumoPlayer data;
-        final SumoPlayer killerData;
-        final Player killer;
-        final String[] messages;
-        String string;
-        final Player winner;
-        final String announce;
         return player -> {
-            data = this.getPlayer(player);
+            final SumoPlayer data = this.getPlayer(player);
             if (data == null || data.getFighting() == null) {
                 System.out.println("data is null");
             }
             else if (data.getState() == SumoPlayer.SumoState.FIGHTING || data.getState() == SumoPlayer.SumoState.PREPARING) {
-                killerData = data.getFighting();
-                killer = this.getPlugin().getServer().getPlayer(killerData.getUuid());
+                final SumoPlayer killerData = data.getFighting();
+                final Player killer = this.getPlugin().getServer().getPlayer(killerData.getUuid());
                 data.getFightTask().cancel();
                 killerData.getFightTask().cancel();
                 data.setState(SumoPlayer.SumoState.ELIMINATED);
@@ -108,9 +101,9 @@ public class SumoEvent extends PracticeEvent<SumoPlayer>
                 final String eliminatedBy = (killer == null) ? "." : (" by " + ChatColor.GREEN + killer.getName());
                 this.sendMessage(ChatColor.RED + "[Event] " + ChatColor.RED + player.getName() + ChatColor.GRAY + " has been eliminated" + eliminatedBy);
                 if (this.getByState(SumoPlayer.SumoState.WAITING).size() == 1) {
-                    winner = Bukkit.getPlayer((UUID)this.getByState(SumoPlayer.SumoState.WAITING).stream().findFirst().get());
+                    final Player winner = Bukkit.getPlayer((UUID)this.getByState(SumoPlayer.SumoState.WAITING).stream().findFirst().get());
                     if (winner != null) {
-                        announce = ChatColor.DARK_RED + winner.getName() + ChatColor.WHITE + " has won our " + ChatColor.DARK_RED + "Sumo" + ChatColor.WHITE + " event!";
+                        final String announce = ChatColor.DARK_RED + winner.getName() + ChatColor.WHITE + " has won our " + ChatColor.DARK_RED + "Sumo" + ChatColor.WHITE + " event!";
                         Bukkit.broadcastMessage(announce);
                     }
                     this.fighting.clear();

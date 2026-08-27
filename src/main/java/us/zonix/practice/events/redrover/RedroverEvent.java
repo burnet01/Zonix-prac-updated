@@ -83,9 +83,8 @@ public class RedroverEvent extends PracticeEvent<RedroverPlayer>
     
     @Override
     public Consumer<Player> onDeath() {
-        final RedroverPlayer data;
         return player -> {
-            data = this.getPlayer(player);
+            final RedroverPlayer data = this.getPlayer(player);
             if (data != null) {
                 if (data.getState() == RedroverPlayer.RedroverState.FIGHTING || data.getState() == RedroverPlayer.RedroverState.PREPARING) {
                     if (data.getFightTask() != null) {
@@ -167,17 +166,11 @@ public class RedroverEvent extends PracticeEvent<RedroverPlayer>
         bluePlayer.setFightPlayer(redPlayer);
         redPlayer.setFightTask(task);
         bluePlayer.setFightTask(task);
-        final Player player3;
-        final Player player4;
-        final Player[] array;
-        final Player[] players;
-        int length;
-        int j;
-        Player player2;
+        final Player player3 = picked1;
+        final Player player4 = picked2;
+        final Player[] players = { player3, player4 };
         this.getPlugin().getServer().getScheduler().runTask((Plugin)this.getPlugin(), () -> {
-            players = (array = new Player[] { player3, player4 });
-            for (length = array.length; j < length; ++j) {
-                player2 = array[j];
+            for (final Player player2 : players) {
                 if (this.streakPlayer == null || this.streakPlayer != player2.getUniqueId()) {
                     PlayerUtil.clearPlayer(player2);
                     this.getPlugin().getKitManager().getKit("NoDebuff").applyToPlayer(player2);
