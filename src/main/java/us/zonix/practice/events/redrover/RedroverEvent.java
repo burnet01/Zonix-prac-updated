@@ -84,10 +84,6 @@ public class RedroverEvent extends PracticeEvent<RedroverPlayer>
     @Override
     public Consumer<Player> onDeath() {
         final RedroverPlayer data;
-        final String[] messages;
-        String string;
-        final Object o;
-        final StringBuilder sb;
         return player -> {
             data = this.getPlayer(player);
             if (data != null) {
@@ -99,16 +95,8 @@ public class RedroverEvent extends PracticeEvent<RedroverPlayer>
                         data.getFightPlayer().getFightTask().cancel();
                     }
                     this.getPlayers().remove(player.getUniqueId());
-                    messages = new String[] { null };
-                    new StringBuilder().append(ChatColor.RED).append("[Event] ").append(ChatColor.RED).append(player.getName()).append(ChatColor.GRAY).append(" has been eliminated");
-                    if (Bukkit.getPlayer(data.getFightPlayer().getUuid()) == null) {
-                        string = ".";
-                    }
-                    else {
-                        string = " by " + ChatColor.GREEN + Bukkit.getPlayer(data.getFightPlayer().getUuid()).getName();
-                    }
-                    messages[o] = sb.append(string).toString();
-                    this.sendMessage(messages);
+                    final String killerName = (Bukkit.getPlayer(data.getFightPlayer().getUuid()) == null) ? "." : (" by " + ChatColor.GREEN + Bukkit.getPlayer(data.getFightPlayer().getUuid()).getName());
+                    this.sendMessage(ChatColor.RED + "[Event] " + ChatColor.RED + player.getName() + ChatColor.GRAY + " has been eliminated" + killerName);
                     this.getPlugin().getServer().getScheduler().runTask((Plugin)this.getPlugin(), () -> {
                         this.getPlugin().getPlayerManager().sendToSpawnAndReset(player);
                         if (this.getPlayers().size() >= 2) {
@@ -232,7 +220,7 @@ public class RedroverEvent extends PracticeEvent<RedroverPlayer>
     }
     
     public List<UUID> getByState(final RedroverPlayer.RedroverState state) {
-        return this.players.values().stream().filter(player -> player.getState() == state).map(EventPlayer::getUuid).collect(Collectors.toList()));
+        return this.players.values().stream().filter(player -> player.getState() == state).map(EventPlayer::getUuid).collect(Collectors.toList());
     }
     
     @Override

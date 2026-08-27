@@ -82,8 +82,6 @@ public class SumoEvent extends PracticeEvent<SumoPlayer>
         final Player killer;
         final String[] messages;
         String string;
-        final Object o;
-        final StringBuilder sb;
         final Player winner;
         final String announce;
         return player -> {
@@ -184,12 +182,12 @@ public class SumoEvent extends PracticeEvent<SumoPlayer>
     }
     
     public List<UUID> getByState(final SumoPlayer.SumoState state) {
-        return this.players.values().stream().filter(player -> player.getState() == state).map(EventPlayer::getUuid).collect(Collectors.toList()));
+        return this.players.values().stream().filter(player -> player.getState() == state).map(EventPlayer::getUuid).collect(Collectors.toList());
     }
     
     @Override
     public List<String> getScoreboardLines(final Player player) {
-        final List<String> strings = (List<String>)Lists.newArrayList();
+        final List<String> strings = new ArrayList<String>();
         strings.add(" &c* &fPlayers&7: " + this.players.size() + "/" + this.getLimit());
         final int countdown = this.countdownTask.getTimeUntilStart();
         if (countdown > 0 && countdown <= 60) {

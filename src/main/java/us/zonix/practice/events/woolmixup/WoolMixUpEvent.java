@@ -198,7 +198,7 @@ public class WoolMixUpEvent extends PracticeEvent<WoolMixUpPlayer>
     }
     
     public List<UUID> getByState(final WoolMixUpPlayer.WoolMixUpState state) {
-        return this.players.values().stream().filter(player -> player.getState() == state).map(EventPlayer::getUuid).collect(Collectors.toList()));
+        return this.players.values().stream().filter(player -> player.getState() == state).map(EventPlayer::getUuid).collect(Collectors.toList());
     }
     
     public int getRound() {
@@ -297,7 +297,7 @@ public class WoolMixUpEvent extends PracticeEvent<WoolMixUpPlayer>
     
     @Override
     public List<String> getScoreboardLines(final Player player) {
-        final List<String> strings = (List<String>)Lists.newArrayList();
+        final List<String> strings = new ArrayList<String>();
         final int playing = this.getPlayers().size();
         strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Players�7: " + playing + "/" + this.getLimit());
         final int countdown = this.getCountdownTask().getTimeUntilStart();

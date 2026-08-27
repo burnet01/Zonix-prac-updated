@@ -189,7 +189,7 @@ public class OITCEvent extends PracticeEvent<OITCPlayer>
     }
     
     private List<UUID> getByState(final OITCPlayer.OITCState state) {
-        return this.players.values().stream().filter(player -> player.getState() == state).map(EventPlayer::getUuid).collect(Collectors.toList()));
+        return this.players.values().stream().filter(player -> player.getState() == state).map(EventPlayer::getUuid).collect(Collectors.toList());
     }
     
     @Override
