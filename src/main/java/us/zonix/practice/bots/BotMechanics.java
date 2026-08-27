@@ -338,16 +338,37 @@ public class BotMechanics extends BukkitRunnable
     }
     
     private ThrownPotion getThrownPotion(final ItemStack potion) {
-        final ThrownPotion thrownPotion = (ThrownPotion)this.zonixBot.getBukkitEntity().getWorld().spawnEntity(this.zonixBot.getBukkitEntity().getLocation(), EntityType.SPLASH_POTION);
+        final ThrownPotion thrownPotion = (ThrownPotion)this.zonixBot.getBukkitEntity().getWorld().spawnEntity(this.zonixBot.getBukkitEntity().getEyeLocation(), EntityType.SPLASH_POTION);
         thrownPotion.getEffects().addAll(Potion.fromItemStack(potion).getEffects());
         thrownPotion.setShooter((ProjectileSource)this.zonixBot.getBukkitEntity());
         thrownPotion.setItem(potion);
-        final Vector vec = this.zonixBot.getBukkitEntity().getLocation().getDirection();
-        if (vec.getY() == 0.0) {
-            vec.setY(-this.random.nextInt(2) + 1 + this.random.nextDouble() / 10.0);
-        }
-        thrownPotion.setVelocity(vec);
+        thrownPotion.setVelocity(this.computeThrowVelocity(thrownPotion.getLocation()));
         return thrownPotion;
+    }
+
+    private Vector computeThrowVelocity(final Location origin) {
+        Location aim;
+        if (this.target != null && this.target.isOnline()) {
+            aim = this.target.getLocation().add(0.0, 0.4, 0.0);
+        }
+        else {
+            aim = origin.clone().add(origin.getDirection().multiply(6.0));
+        }
+        final double dx = aim.getX() - origin.getX();
+        final double dy = aim.getY() - origin.getY();
+        final double dz = aim.getZ() - origin.getZ();
+        final double horizontal = Math.sqrt(dx * dx + dz * dz);
+        final int ticks = Math.max(10, Math.min(30, (int)(horizontal / 1.35)));
+        final double gravity = 0.03;
+        final double vx = dx / ticks;
+        final double vy = dy / ticks + 0.5 * gravity * ticks;
+        final double vz = dz / ticks;
+        final Vector v = new Vector(vx, vy, vz);
+        final double maxSpeed = 1.6;
+        if (v.length() > maxSpeed) {
+            v.normalize().multiply(maxSpeed);
+        }
+        return v;
     }
     
     public void run() {
