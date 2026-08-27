@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.command.CommandSender;
 import us.zonix.practice.util.CC;
 import us.zonix.practice.Practice;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 
 public class CoinEventCommand extends Command
@@ -58,10 +59,7 @@ public class CoinEventCommand extends Command
         final String toSend = ChatColor.RED.toString() + ChatColor.BOLD + "[Event] " + ChatColor.WHITE + "" + event.getName() + " is starting soon. " + ChatColor.GRAY + "[Join]";
         final String toSendDonor = ChatColor.GRAY + "[" + ChatColor.BOLD + "*" + ChatColor.GRAY + "] " + ChatColor.RED.toString() + ChatColor.BOLD + player.getName() + ChatColor.WHITE + " is hosting a " + ChatColor.WHITE.toString() + ChatColor.BOLD + event.getName() + " Event. " + ChatColor.GRAY + "[Join]";
         final Clickable message = new Clickable(player.hasPermission("practice.donator") ? toSendDonor : toSend, ChatColor.GRAY + "Click to join this event.", "/join " + event.getName());
-        final Collection onlinePlayers = this.plugin.getServer().getOnlinePlayers();
-        final Clickable clickable = message;
-        Objects.requireNonNull(clickable);
-        onlinePlayers.forEach(clickable::sendToPlayer);
+        Bukkit.getOnlinePlayers().forEach(online -> message.sendToPlayer(online));
         if (player.hasPermission("host.limit.50")) {
             event.setLimit(50);
         }

@@ -186,10 +186,7 @@ public class TournamentCommand extends Command
                     if (tournament != null) {
                         final String toSend = ChatColor.RED.toString() + ChatColor.BOLD + tournament.getKitName() + ChatColor.RED + " [" + tournament.getTeamSize() + "v" + tournament.getTeamSize() + "]" + ChatColor.WHITE + " is starting soon. " + ChatColor.GRAY + "[Click to Join]";
                         final Clickable message = new Clickable(toSend, ChatColor.GRAY + "Click to join this tournament.", "/join " + id);
-                        final Collection onlinePlayers = Bukkit.getServer().getOnlinePlayers();
-                        final Clickable clickable = message;
-                        Objects.requireNonNull(clickable);
-                        onlinePlayers.forEach(clickable::sendToPlayer);
+                        Bukkit.getOnlinePlayers().forEach(online -> message.sendToPlayer(online));
                     }
                     break;
                 }

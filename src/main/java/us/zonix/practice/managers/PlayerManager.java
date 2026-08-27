@@ -290,7 +290,7 @@ public class PlayerManager
             }
         }
         final List<Map.Entry<String, Integer>> entries = new ArrayList<Map.Entry<String, Integer>>(eloMap.entrySet());
-        entries.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+        entries.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
         final HashMap<String, Integer> sorted = new LinkedHashMap<String, Integer>();
         for (final Map.Entry<String, Integer> entry : entries) {
             sorted.put(entry.getKey(), entry.getValue());

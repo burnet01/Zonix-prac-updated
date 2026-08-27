@@ -55,10 +55,7 @@ public class EventCountdownTask extends BukkitRunnable
             toSendDonor = ChatColor.GRAY + "[" + ChatColor.BOLD + "*" + ChatColor.GRAY + "] " + ChatColor.RED.toString() + ChatColor.BOLD + ((this.event.getHost() == null) ? "Someone" : this.event.getHost().getName()) + ChatColor.WHITE + " is hosting a " + ChatColor.WHITE.toString() + ChatColor.BOLD + this.event.getName() + " Event. " + ChatColor.GRAY + "[Join]";
             if (this.event.getHost() != null) {
                 final Clickable message = new Clickable(this.event.getHost().hasPermission("practice.donator") ? toSendDonor : toSend, ChatColor.GRAY + "Click to join this event.", "/join " + this.event.getName());
-                final Collection onlinePlayers = Bukkit.getServer().getOnlinePlayers();
-                final Clickable clickable = message;
-                Objects.requireNonNull(clickable);
-                onlinePlayers.forEach(clickable::sendToPlayer);
+                Bukkit.getOnlinePlayers().forEach(online -> message.sendToPlayer(online));
             }
         }
         --this.timeUntilStart;
