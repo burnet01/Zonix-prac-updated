@@ -69,7 +69,7 @@ public class RegionLockCommand extends Command
                     commandSender.sendMessage(ChatColor.YELLOW + "Allowed Continents: " + ChatColor.RED + String.join(", ", allowedContinents2));
                     return true;
                 }
-                commandSender.sendMessage(ChatColor.YELLOW + "Disallowed Continents: " + ChatColor.RED + RegionLockCommand.ALL_REGIONS.stream().filter(s -> !allowedContinents2.contains(s)).collect((Collector<? super Object, ?, String>)Collectors.joining(", ")));
+                commandSender.sendMessage(ChatColor.YELLOW + "Disallowed Continents: " + ChatColor.RED + RegionLockCommand.ALL_REGIONS.stream().filter(s -> !allowedContinents2.contains(s)).collect(Collectors.joining(", ")));
                 return true;
             }
             case "toggle": {

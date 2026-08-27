@@ -325,17 +325,11 @@ public class WoolMixUpEvent extends PracticeEvent<WoolMixUpPlayer>
         }
         this.blocksRegen.clear();
         this.blocksRegen.putAll(blocksToRemove);
-        final EditSession editSession;
-        final HashMap<Location, V> hashMap;
-        final Iterator<Location> iterator2;
-        Location block;
         TaskManager.IMP.async(() -> {
-            editSession = new EditSessionBuilder(this.getPlugin().getSpawnManager().getWoolCenter().getWorld()).fastmode(true).allowedRegionsEverywhere().autoQueue(false).limitUnlimited().build();
-            hashMap.keySet().iterator();
-            while (iterator2.hasNext()) {
-                block = iterator2.next();
+            final EditSession editSession = new EditSessionBuilder(this.getPlugin().getSpawnManager().getWoolCenter().getWorld()).fastmode(true).allowedRegionsEverywhere().autoQueue(false).limitUnlimited().build();
+            for (final Location block : blocksToRemove.keySet()) {
                 try {
-                    editSession.setBlock(new Vector((double)block.getBlockX(), (double)block.getBlockY(), block.getZ()), new BaseBlock(0, 0));
+                    editSession.setBlock(new Vector(block.getBlockX(), block.getBlockY(), block.getBlockZ()), new BaseBlock(0, 0));
                 }
                 catch (MaxChangedBlocksException e) {
                     e.printStackTrace();
@@ -369,16 +363,11 @@ public class WoolMixUpEvent extends PracticeEvent<WoolMixUpPlayer>
     }
     
     public void regenerateArena(final HashMap<Location, Integer> blocksToAdd) {
-        final EditSession editSession;
-        final Iterator<Location> iterator;
-        Location block;
         TaskManager.IMP.async(() -> {
-            editSession = new EditSessionBuilder(this.getPlugin().getSpawnManager().getWoolCenter().getWorld()).fastmode(true).allowedRegionsEverywhere().autoQueue(false).limitUnlimited().build();
+            final EditSession editSession = new EditSessionBuilder(this.getPlugin().getSpawnManager().getWoolCenter().getWorld()).fastmode(true).allowedRegionsEverywhere().autoQueue(false).limitUnlimited().build();
             try {
-                blocksToAdd.keySet().iterator();
-                while (iterator.hasNext()) {
-                    block = iterator.next();
-                    editSession.setBlock(new Vector(block.getBlockX(), block.getBlockY(), block.getBlockZ()), new BaseBlock(35, (int)blocksToAdd.get(block)));
+                for (final Location block : blocksToAdd.keySet()) {
+                    editSession.setBlock(new Vector(block.getBlockX(), block.getBlockY(), block.getBlockZ()), new BaseBlock(35, blocksToAdd.get(block)));
                 }
             }
             catch (MaxChangedBlocksException e) {

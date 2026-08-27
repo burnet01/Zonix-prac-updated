@@ -47,28 +47,26 @@ public class TournamentCommand extends Command
                 this.inventoryUI.setItem(kit.getPriority(), new InventoryUI.ClickableItem() {
                     private final ItemStack def;
                     private ItemStack itemStack;
-                    final /* synthetic */ Kit val$kit;
-                    
+
                     {
-                        this.def = ItemUtil.renameItem(ItemUtil.reloreItem(this.val$kit.getIcon(), ChatColor.GRAY + "Click to host tournament"), ChatColor.GRAY + this.val$kit.getName());
+                        this.def = ItemUtil.renameItem(ItemUtil.reloreItem(kit.getIcon(), ChatColor.GRAY + "Click to host tournament"), ChatColor.GRAY + kit.getName());
                         this.itemStack = this.def.clone();
                     }
-                    
+
                     @Override
                     public void onClick(final InventoryClickEvent event) {
                         final InventoryUI inventoryUI = new InventoryUI(ChatColor.GRAY + "Select team size", 1);
                         for (int i = 1; i < 5; ++i) {
-                            final int finalI = i;
+                            final int teamSize = i;
                             inventoryUI.addItem(new InventoryUI.ClickableItem() {
                                 private final ItemStack def;
                                 private ItemStack itemStack;
-                                final /* synthetic */ int val$finalI;
-                                
+
                                 {
-                                    this.def = ItemUtil.renameItem(ItemUtil.reloreItem(new ItemStack(Material.NAME_TAG), ChatColor.GRAY + "Teamsize: " + this.val$finalI), ChatColor.GRAY + ClickableItem.this.val$kit.getName());
+                                    this.def = ItemUtil.renameItem(ItemUtil.reloreItem(new ItemStack(Material.NAME_TAG), ChatColor.GRAY + "Teamsize: " + teamSize), ChatColor.GRAY + kit.getName());
                                     this.itemStack = this.def.clone();
                                 }
-                                
+
                                 @Override
                                 public void onClick(final InventoryClickEvent event) {
                                     if (!TournamentCommand.this.plugin.getTournamentManager().getTournaments().isEmpty()) {
@@ -76,7 +74,7 @@ public class TournamentCommand extends Command
                                         event.getWhoClicked().closeInventory();
                                         return;
                                     }
-                                    TournamentCommand.this.plugin.getTournamentManager().createTournament((CommandSender)event.getWhoClicked(), 10, this.val$finalI, 150, ClickableItem.this.val$kit.getName());
+                                    TournamentCommand.this.plugin.getTournamentManager().createTournament((CommandSender)event.getWhoClicked(), 10, teamSize, 150, kit.getName());
                                 }
                                 
                                 @Override

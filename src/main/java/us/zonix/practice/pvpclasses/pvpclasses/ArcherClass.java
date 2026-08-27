@@ -173,7 +173,7 @@ public class ArcherClass extends PvPClass
             if (ArcherClass.lastSpeedUsage.containsKey(player.getName()) && ArcherClass.lastSpeedUsage.get(player.getName()) > System.currentTimeMillis()) {
                 final long millisLeft = ArcherClass.lastSpeedUsage.get(player.getName()) - System.currentTimeMillis();
                 final String msg = TimeUtils.formatIntoDetailedString((int)millisLeft / 1000);
-                player.sendMessage(ChatColor.RED + "You can't use this for another §f" + msg + "§c.");
+                player.sendMessage(ChatColor.RED + "You can't use this for another ï¿½f" + msg + "ï¿½c.");
                 return false;
             }
             ArcherClass.lastSpeedUsage.put(player.getName(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(30L));
@@ -184,7 +184,7 @@ public class ArcherClass extends PvPClass
             if (ArcherClass.lastJumpUsage.containsKey(player.getName()) && ArcherClass.lastJumpUsage.get(player.getName()) > System.currentTimeMillis()) {
                 final long millisLeft = ArcherClass.lastJumpUsage.get(player.getName()) - System.currentTimeMillis();
                 final String msg = TimeUtils.formatIntoDetailedString((int)millisLeft / 1000);
-                player.sendMessage(ChatColor.RED + "You can't use this for another §f" + msg + "§c.");
+                player.sendMessage(ChatColor.RED + "You can't use this for another ï¿½f" + msg + "ï¿½c.");
                 return false;
             }
             ArcherClass.lastJumpUsage.put(player.getName(), System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(1L));
@@ -201,7 +201,7 @@ public class ArcherClass extends PvPClass
         if (Practice.getInstance().getPartyManager().getParty(player.getUniqueId()) != null) {
             final Party team = Practice.getInstance().getPartyManager().getParty(player.getUniqueId());
             int amount = 0;
-            for (final Player member : team.members().collect((Collector<? super Player, ?, List<? super Player>>)Collectors.toList())) {
+            for (final Player member : team.members().collect(Collectors.toList())) {
                 ++amount;
                 if (PvPClassHandler.hasKitOn(member, this) && amount > 3) {
                     break;

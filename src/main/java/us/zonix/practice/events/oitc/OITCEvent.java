@@ -255,15 +255,9 @@ public class OITCEvent extends PracticeEvent<OITCPlayer>
                 this.player.sendMessage(ChatColor.RED + "[Event] " + ChatColor.GRAY + "Respawning in " + this.time + "...");
             }
             if (this.time == 5) {
-                final Player player;
-                final Object o;
                 OITCEvent.this.getPlugin().getServer().getScheduler().runTask((Plugin)OITCEvent.this.getPlugin(), () -> {
                     PlayerUtil.clearPlayer(this.player);
                     OITCEvent.this.getBukkitPlayers().forEach(member -> member.hidePlayer(this.player));
-                    OITCEvent.this.getBukkitPlayers();
-                    player = this.player;
-                    Objects.requireNonNull(player);
-                    ((Iterable<Object>)o).forEach((Consumer<? super Object>)player::hidePlayer);
                     this.player.setGameMode(GameMode.SPECTATOR);
                     return;
                 });
@@ -272,16 +266,10 @@ public class OITCEvent extends PracticeEvent<OITCPlayer>
             else if (this.time <= 0) {
                 this.player.sendMessage(ChatColor.RED + "[Event] " + ChatColor.GRAY + "Respawning...");
                 this.player.sendMessage(ChatColor.RED + "[Event] " + ChatColor.RED.toString() + ChatColor.BOLD + this.oitcPlayer.getLives() + " " + ((this.oitcPlayer.getLives() == 1) ? "LIFE" : "LIVES") + " REMAINING");
-                final Player player2;
-                final Object o2;
                 OITCEvent.this.getPlugin().getServer().getScheduler().runTaskLater((Plugin)OITCEvent.this.getPlugin(), () -> {
                     OITCEvent.this.giveRespawnItems(this.player, this.oitcPlayer);
                     this.player.teleport(OITCEvent.this.getGameLocations().remove(ThreadLocalRandom.current().nextInt(OITCEvent.this.getGameLocations().size())).toBukkitLocation());
                     OITCEvent.this.getBukkitPlayers().forEach(member -> member.showPlayer(this.player));
-                    OITCEvent.this.getBukkitPlayers();
-                    player2 = this.player;
-                    Objects.requireNonNull(player2);
-                    ((Iterable<Object>)o2).forEach((Consumer<? super Object>)player2::showPlayer);
                     return;
                 }, 2L);
                 this.oitcPlayer.setState(OITCPlayer.OITCState.FIGHTING);

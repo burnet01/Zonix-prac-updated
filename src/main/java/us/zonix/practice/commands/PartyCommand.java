@@ -350,10 +350,12 @@ public class PartyCommand extends Command
                 final List<UUID> members = new ArrayList<UUID>(party.getMembers());
                 members.remove(party.getLeader());
                 final StringBuilder builder = new StringBuilder(ChatColor.GOLD + "Members (" + party.getMembers().size() + "): ");
-                final Stream<Object> stream = members.stream();
-                final Server server = this.plugin.getServer();
-                Objects.requireNonNull(server);
-                stream.map((Function<? super Object, ?>)server::getPlayer).filter(Objects::nonNull).forEach(member -> builder.append(ChatColor.GRAY).append(member.getName()).append(","));
+                for (final UUID memberUUID : members) {
+                    final Player member = this.plugin.getServer().getPlayer(memberUUID);
+                    if (member != null) {
+                        builder.append(ChatColor.GRAY).append(member.getName()).append(",");
+                    }
+                }
                 final String[] information = { ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "----------------------------------------------------", ChatColor.RED + "Party Information:", ChatColor.GOLD + "Leader: " + ChatColor.GRAY + this.plugin.getServer().getPlayer(party.getLeader()).getName(), ChatColor.GOLD + builder.toString(), ChatColor.GOLD + "Party State: " + ChatColor.GRAY + (party.isOpen() ? "Open" : "Locked"), ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "----------------------------------------------------" };
                 player.sendMessage(information);
                 break;
