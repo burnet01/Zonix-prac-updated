@@ -288,12 +288,7 @@ public class MatchManager
             player.hidePlayer(online);
             return;
         });
-        final Stream<Player> stream;
-        targetMatch.getTeams().forEach(team -> {
-            team.alivePlayers();
-            Objects.requireNonNull(player);
-            stream.forEach(player::showPlayer);
-        });
+        targetMatch.getTeams().forEach(team -> team.alivePlayers().forEach(player::showPlayer));
     }
     
     public void addDroppedItem(final Match match, final Item item) {
@@ -308,12 +303,8 @@ public class MatchManager
         for (final Item item : items) {
             match.addEntityToRemove((Entity)item);
         }
-        final Iterator<Item> iterator2;
-        Item item2;
         match.addRunnable(this.plugin.getServer().getScheduler().runTaskLater((Plugin)this.plugin, () -> {
-            items.iterator();
-            while (iterator2.hasNext()) {
-                item2 = iterator2.next();
+            for (final Item item2 : items) {
                 match.removeEntityToRemove((Entity)item2);
                 item2.remove();
             }

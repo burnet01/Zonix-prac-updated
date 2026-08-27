@@ -103,46 +103,30 @@ public class ArenaManager
     public void saveArenas() {
         final FileConfiguration fileConfig = (FileConfiguration)this.arenasFile.getConfiguration();
         fileConfig.set("arenas", (Object)null);
-        final String a;
-        final String b;
-        final String min;
-        final String max;
-        final String arenaRoot;
-        final FileConfiguration fileConfiguration;
-        int i;
-        final Iterator<StandaloneArena> iterator;
-        StandaloneArena saArena;
-        String saA;
-        String saB;
-        String saMin;
-        String saMax;
-        String standAloneRoot;
         this.arenas.forEach((arenaName, arena) -> {
-            a = CustomLocation.locationToString(arena.getA());
-            b = CustomLocation.locationToString(arena.getB());
-            min = CustomLocation.locationToString(arena.getMin());
-            max = CustomLocation.locationToString(arena.getMax());
-            arenaRoot = "arenas." + arenaName;
-            fileConfiguration.set(arenaRoot + ".a", (Object)a);
-            fileConfiguration.set(arenaRoot + ".b", (Object)b);
-            fileConfiguration.set(arenaRoot + ".min", (Object)min);
-            fileConfiguration.set(arenaRoot + ".max", (Object)max);
-            fileConfiguration.set(arenaRoot + ".enabled", (Object)arena.isEnabled());
-            fileConfiguration.set(arenaRoot + ".standaloneArenas", (Object)null);
-            i = 0;
+            final String a = CustomLocation.locationToString(arena.getA());
+            final String b = CustomLocation.locationToString(arena.getB());
+            final String min = CustomLocation.locationToString(arena.getMin());
+            final String max = CustomLocation.locationToString(arena.getMax());
+            final String arenaRoot = "arenas." + arenaName;
+            fileConfig.set(arenaRoot + ".a", (Object)a);
+            fileConfig.set(arenaRoot + ".b", (Object)b);
+            fileConfig.set(arenaRoot + ".min", (Object)min);
+            fileConfig.set(arenaRoot + ".max", (Object)max);
+            fileConfig.set(arenaRoot + ".enabled", (Object)arena.isEnabled());
+            fileConfig.set(arenaRoot + ".standaloneArenas", (Object)null);
+            int i = 0;
             if (arena.getStandaloneArenas() != null) {
-                arena.getStandaloneArenas().iterator();
-                while (iterator.hasNext()) {
-                    saArena = iterator.next();
-                    saA = CustomLocation.locationToString(saArena.getA());
-                    saB = CustomLocation.locationToString(saArena.getB());
-                    saMin = CustomLocation.locationToString(saArena.getMin());
-                    saMax = CustomLocation.locationToString(saArena.getMax());
-                    standAloneRoot = arenaRoot + ".standaloneArenas." + i;
-                    fileConfiguration.set(standAloneRoot + ".a", (Object)saA);
-                    fileConfiguration.set(standAloneRoot + ".b", (Object)saB);
-                    fileConfiguration.set(standAloneRoot + ".min", (Object)saMin);
-                    fileConfiguration.set(standAloneRoot + ".max", (Object)saMax);
+                for (final StandaloneArena saArena : arena.getStandaloneArenas()) {
+                    final String saA = CustomLocation.locationToString(saArena.getA());
+                    final String saB = CustomLocation.locationToString(saArena.getB());
+                    final String saMin = CustomLocation.locationToString(saArena.getMin());
+                    final String saMax = CustomLocation.locationToString(saArena.getMax());
+                    final String standAloneRoot = arenaRoot + ".standaloneArenas." + i;
+                    fileConfig.set(standAloneRoot + ".a", (Object)saA);
+                    fileConfig.set(standAloneRoot + ".b", (Object)saB);
+                    fileConfig.set(standAloneRoot + ".min", (Object)saMin);
+                    fileConfig.set(standAloneRoot + ".max", (Object)saMax);
                     ++i;
                 }
             }

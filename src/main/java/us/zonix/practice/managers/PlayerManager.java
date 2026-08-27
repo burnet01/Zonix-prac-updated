@@ -59,22 +59,18 @@ public class PlayerManager
     }
     
     private void loadData(final PlayerData playerData) {
-        final Document document;
-        final Document statisticsDocument;
-        Document ladderDocument;
-        final Document partyStats;
         Bukkit.getScheduler().runTaskAsynchronously((Plugin)this.plugin, () -> {
             playerData.setPlayerState(PlayerState.SPAWN);
-            document = PracticeMongo.getInstance().getPlayers().find(Filters.eq("uuid", playerData.getUniqueId().toString())).first();
+            final Document document = PracticeMongo.getInstance().getPlayers().find(Filters.eq("uuid", playerData.getUniqueId().toString())).first();
             if (document == null) {
                 this.saveData(playerData);
             }
             else {
-                statisticsDocument = (Document)document.get("statistics");
+                final Document statisticsDocument = (Document)document.get("statistics");
                 if (statisticsDocument != null) {
                     try {
                         statisticsDocument.keySet().forEach(key -> {
-                            ladderDocument = (Document)statisticsDocument.get(key);
+                            final Document ladderDocument = (Document)statisticsDocument.get(key);
                             if (ladderDocument.containsKey("rankedElo")) {
                                 playerData.getRankedElo().put(key, ladderDocument.getInteger("rankedElo"));
                             }
@@ -101,7 +97,7 @@ public class PlayerManager
                     playerData.setUnrankedWins(document.getInteger("totalUnrankedWins"));
                 }
                 if (document.containsKey("partyStatistics")) {
-                    partyStats = document.get((Object)"partyStatistics", Document.class);
+                    final Document partyStats = document.get((Object)"partyStatistics", Document.class);
                     playerData.setPlayedBard(partyStats.getInteger("playedBard"));
                     playerData.setPlayedArcher(partyStats.getInteger("playedArcher"));
                 }
@@ -254,20 +250,14 @@ public class PlayerManager
         final Config config = new Config("/players/" + playerData.getUniqueId().toString(), this.plugin);
         final ConfigurationSection playerKitsSection = config.getConfig().getConfigurationSection("playerkits");
         if (playerKitsSection != null) {
-            final ConfigurationSection kitSection;
-            final Integer kitIndex;
-            final ConfigurationSection configurationSection;
-            final String displayName;
-            final ItemStack[] contents;
-            final PlayerKit playerKit;
             this.plugin.getKitManager().getKits().forEach(kit -> {
-                kitSection = playerKitsSection.getConfigurationSection(kit.getName());
+                final ConfigurationSection kitSection = playerKitsSection.getConfigurationSection(kit.getName());
                 if (kitSection != null) {
                     kitSection.getKeys(false).forEach(kitKey -> {
-                        kitIndex = Integer.parseInt(kitKey);
-                        displayName = configurationSection.getString(kitKey + ".displayName");
-                        contents = ((List<ItemStack>)configurationSection.get(kitKey + ".contents")).toArray(new ItemStack[0]);
-                        playerKit = new PlayerKit(kit.getName(), kitIndex, contents, displayName);
+                        final int kitIndex = Integer.parseInt(kitKey);
+                        final String displayName = kitSection.getString(kitKey + ".displayName");
+                        final ItemStack[] contents = ((List<ItemStack>)kitSection.get(kitKey + ".contents")).toArray(new ItemStack[0]);
+                        final PlayerKit playerKit = new PlayerKit(kit.getName(), kitIndex, contents, displayName);
                         playerData.addPlayerKit(kitIndex, playerKit);
                     });
                 }
@@ -316,12 +306,9 @@ public class PlayerManager
         else {
             player.teleport(this.plugin.getSpawnManager().getSpawnLocation().toBukkitLocation());
         }
-        final PlayerData playerData2;
-        final boolean playerSeen;
-        final boolean pSeen;
         this.plugin.getServer().getOnlinePlayers().forEach(p -> {
-            playerSeen = (playerData2.getOptions().isVisibility() && player.hasPermission("practice.visibility") && Practice.getInstance().getPlayerManager().getPlayerData(player.getUniqueId()).getPlayerState() == PlayerState.SPAWN);
-            pSeen = (playerData2.getOptions().isVisibility() && player.hasPermission("practice.visibility") && Practice.getInstance().getPlayerManager().getPlayerData(p.getUniqueId()).getPlayerState() == PlayerState.SPAWN);
+            final boolean playerSeen = (playerData.getOptions().isVisibility() && player.hasPermission("practice.visibility") && Practice.getInstance().getPlayerManager().getPlayerData(player.getUniqueId()).getPlayerState() == PlayerState.SPAWN);
+            final boolean pSeen = (playerData.getOptions().isVisibility() && player.hasPermission("practice.visibility") && Practice.getInstance().getPlayerManager().getPlayerData(p.getUniqueId()).getPlayerState() == PlayerState.SPAWN);
             if (playerSeen) {
                 p.showPlayer(player);
             }

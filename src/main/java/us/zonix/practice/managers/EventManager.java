@@ -76,16 +76,13 @@ public class EventManager
     }
     
     private void addEvent(final Class<? extends PracticeEvent> clazz) {
-        PracticeEvent event = null;
         try {
-            event = (PracticeEvent)clazz.newInstance();
+            final PracticeEvent event = (PracticeEvent)clazz.newInstance();
+            this.events.put(clazz, event);
         }
         catch (InstantiationException | IllegalAccessException ex2) {
-            final ReflectiveOperationException ex;
-            final ReflectiveOperationException e = ex;
-            e.printStackTrace();
+            ex2.printStackTrace();
         }
-        this.events.put(clazz, event);
     }
     
     public void addSpectatorRedrover(final Player player, final PlayerData playerData, final RedroverEvent event) {
