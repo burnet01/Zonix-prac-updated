@@ -228,10 +228,7 @@ public class QueueManager
             leader.closeInventory();
         }
         else {
-            final Stream<Object> stream = party.getMembers().stream();
-            final PlayerManager playerManager = this.plugin.getPlayerManager();
-            Objects.requireNonNull(playerManager);
-            stream.map((Function<? super Object, ?>)playerManager::getPlayerData).forEach(member -> member.setPlayerState(PlayerState.QUEUE));
+            party.getMembers().stream().map(uuid -> this.plugin.getPlayerManager().getPlayerData(uuid)).forEach(member -> member.setPlayerState(PlayerState.QUEUE));
             final PlayerData playerData = this.plugin.getPlayerManager().getPlayerData(leader.getUniqueId());
             final int elo = type.isRanked() ? playerData.getPartyElo(kitName) : -1;
             this.queued.put(playerData.getUniqueId(), new QueueEntry(type, kitName, bestOfThree, elo, true));
@@ -264,8 +261,7 @@ public class QueueManager
             }
         }
         final int finalEloRange = eloRange;
-        final int n;
-        final UUID opponent = this.queued.entrySet().stream().filter(entry -> entry.getKey() != partyA.getLeader()).filter(entry -> this.plugin.getPlayerManager().getPlayerData(entry.getKey()).getPlayerState() == PlayerState.QUEUE).filter(entry -> entry.getValue().isParty()).filter(entry -> entry.getValue().getQueueType() == type).filter(entry -> !type.isRanked() || Math.abs(entry.getValue().getElo() - elo) < n).filter(entry -> entry.getValue().getKitName().equals(kitName)).map((Function<? super Object, ? extends UUID>)Map.Entry::getKey).findFirst().orElse(null);
+        final UUID opponent = this.queued.entrySet().stream().filter(entry -> entry.getKey() != partyA.getLeader()).filter(entry -> this.plugin.getPlayerManager().getPlayerData(entry.getKey()).getPlayerState() == PlayerState.QUEUE).filter(entry -> entry.getValue().isParty()).filter(entry -> entry.getValue().getQueueType() == type).filter(entry -> !type.isRanked() || Math.abs(entry.getValue().getElo() - elo) < finalEloRange).filter(entry -> entry.getValue().getKitName().equals(kitName)).map(Map.Entry::getKey).findFirst().orElse(null);
         if (opponent == null) {
             System.out.println("None found..");
             return;

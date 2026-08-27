@@ -130,7 +130,7 @@ public class ParkourEvent extends PracticeEvent<ParkourPlayer>
     }
     
     public List<UUID> getByState(final ParkourPlayer.ParkourState state) {
-        return this.players.values().stream().filter(player -> player.getState() == state).map((Function<? super ParkourPlayer, ?>)EventPlayer::getUuid).collect((Collector<? super Object, ?, List<UUID>>)Collectors.toList());
+        return this.players.values().stream().filter(player -> player.getState() == state).map(EventPlayer::getUuid).collect(Collectors.toList()));
     }
     
     @Override

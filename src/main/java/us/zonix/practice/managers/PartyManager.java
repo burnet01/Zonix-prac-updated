@@ -72,16 +72,15 @@ public class PartyManager
         this.plugin.getInventoryManager().removeParty(party);
         this.parties.remove(party.getLeader());
         party.broadcast(ChatColor.YELLOW + "Your party has been disbanded.");
-        final PlayerData memberData;
-        party.members().forEach(member -> {
-            memberData = this.plugin.getPlayerManager().getPlayerData(member.getUniqueId());
+        for (final Player member : party.members().collect(Collectors.toList())) {
+            final PlayerData memberData = this.plugin.getPlayerManager().getPlayerData(member.getUniqueId());
             if (this.partyLeaders.get(memberData.getUniqueId()) != null) {
                 this.partyLeaders.remove(memberData.getUniqueId());
             }
             if (memberData.getPlayerState() == PlayerState.SPAWN) {
                 this.plugin.getPlayerManager().sendToSpawnAndReset(member);
             }
-        });
+        }
     }
     
     public void leaveParty(final Player player) {

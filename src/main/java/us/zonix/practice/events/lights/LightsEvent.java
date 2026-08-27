@@ -155,7 +155,7 @@ public class LightsEvent extends PracticeEvent<LightsPlayer>
     }
     
     public List<UUID> getByState(final LightsPlayer.LightsState state) {
-        return this.players.values().stream().filter(player -> player.getState() == state).map((Function<? super LightsPlayer, ?>)EventPlayer::getUuid).collect((Collector<? super Object, ?, List<UUID>>)Collectors.toList());
+        return this.players.values().stream().filter(player -> player.getState() == state).map(EventPlayer::getUuid).collect(Collectors.toList()));
     }
     
     public void setTaskId(final int taskId) {

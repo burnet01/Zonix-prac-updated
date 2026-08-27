@@ -189,23 +189,23 @@ public class OITCEvent extends PracticeEvent<OITCPlayer>
     }
     
     private List<UUID> getByState(final OITCPlayer.OITCState state) {
-        return this.players.values().stream().filter(player -> player.getState() == state).map((Function<? super OITCPlayer, ?>)EventPlayer::getUuid).collect((Collector<? super Object, ?, List<UUID>>)Collectors.toList());
+        return this.players.values().stream().filter(player -> player.getState() == state).map(EventPlayer::getUuid).collect(Collectors.toList()));
     }
     
     @Override
     public List<String> getScoreboardLines(final Player player) {
         final List<String> strings = new ArrayList<String>();
         final int playingOITC = this.getPlayers().size();
-        strings.add(ChatColor.RED.toString() + ChatColor.BOLD + "* " + ChatColor.WHITE + "Players§7: " + playingOITC + "/" + this.getLimit());
+        strings.add(ChatColor.RED.toString() + ChatColor.BOLD + "* " + ChatColor.WHITE + "Playersï¿½7: " + playingOITC + "/" + this.getLimit());
         final int countdown = this.getCountdownTask().getTimeUntilStart();
         if (countdown > 0 && countdown <= 60) {
-            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + "* " + ChatColor.WHITE + "Starting§7: " + countdown + "s");
+            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + "* " + ChatColor.WHITE + "Startingï¿½7: " + countdown + "s");
         }
         if (this.getPlayer(player) != null) {
             final OITCPlayer oitcPlayer = this.getPlayer(player);
             if (oitcPlayer.getState() == OITCPlayer.OITCState.FIGHTING || oitcPlayer.getState() == OITCPlayer.OITCState.RESPAWNING) {
-                strings.add(ChatColor.RED.toString() + ChatColor.BOLD + "* " + ChatColor.WHITE + "Kills§7: " + oitcPlayer.getScore());
-                strings.add(ChatColor.RED.toString() + ChatColor.BOLD + "* " + ChatColor.WHITE + "Lives§7: " + oitcPlayer.getLives());
+                strings.add(ChatColor.RED.toString() + ChatColor.BOLD + "* " + ChatColor.WHITE + "Killsï¿½7: " + oitcPlayer.getScore());
+                strings.add(ChatColor.RED.toString() + ChatColor.BOLD + "* " + ChatColor.WHITE + "Livesï¿½7: " + oitcPlayer.getLives());
             }
         }
         final List<OITCPlayer> sortedList = this.sortedScores();
@@ -215,15 +215,15 @@ public class OITCEvent extends PracticeEvent<OITCPlayer>
             final Player first = Bukkit.getPlayer(sortedList.get(0).getUuid());
             final Player second = Bukkit.getPlayer(sortedList.get(1).getUuid());
             if (first != null) {
-                strings.add(ChatColor.WHITE + "[1] " + first.getName() + "§7: §a" + sortedList.get(0).getScore());
+                strings.add(ChatColor.WHITE + "[1] " + first.getName() + "ï¿½7: ï¿½a" + sortedList.get(0).getScore());
             }
             if (second != null) {
-                strings.add(ChatColor.WHITE + "[2] " + second.getName() + "§7: §a" + sortedList.get(1).getScore());
+                strings.add(ChatColor.WHITE + "[2] " + second.getName() + "ï¿½7: ï¿½a" + sortedList.get(1).getScore());
             }
             if (sortedList.size() >= 3) {
                 final Player third = Bukkit.getPlayer(sortedList.get(2).getUuid());
                 if (third != null) {
-                    strings.add(ChatColor.WHITE + "[3] " + ChatColor.WHITE + third.getName() + "§7: §a" + sortedList.get(2).getScore());
+                    strings.add(ChatColor.WHITE + "[3] " + ChatColor.WHITE + third.getName() + "ï¿½7: ï¿½a" + sortedList.get(2).getScore());
                 }
             }
         }

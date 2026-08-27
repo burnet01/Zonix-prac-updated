@@ -75,7 +75,7 @@ public class TNTTagEvent extends PracticeEvent<TNTTagPlayer>
             if (this.getState() == EventState.STARTED) {
                 wasTagged = this.getPlayer(player).isTagged();
                 this.players.remove(player.getUniqueId());
-                tntTagPlayers = this.getPlayers().values().stream().filter(EventPlayer::playerExists).filter(TNTTagPlayer::isTagged).collect((Collector<? super TNTTagPlayer, ?, List<TNTTagPlayer>>)Collectors.toList());
+                tntTagPlayers = this.getPlayers().values().stream().filter(EventPlayer::playerExists).filter(TNTTagPlayer::isTagged).collect(Collectors.toList()));
                 if (wasTagged && tntTagPlayers.size() == 0) {
                     this.setTntTagState(TNTTagState.PREPARING);
                     this.task.time = 5;
@@ -181,7 +181,7 @@ public class TNTTagEvent extends PracticeEvent<TNTTagPlayer>
                     this.event.sendMessage("&eAll tagged players will explode in &c" + DurationFormatUtils.formatDurationWords((long)(this.time * 1000), true, true) + "&e.");
                 }
                 if (this.time == 0) {
-                    final List<TNTTagPlayer> tagged = this.event.getPlayers().values().stream().filter(TNTTagPlayer::isTagged).collect((Collector<? super TNTTagPlayer, ?, List<TNTTagPlayer>>)Collectors.toList());
+                    final List<TNTTagPlayer> tagged = this.event.getPlayers().values().stream().filter(TNTTagPlayer::isTagged).collect(Collectors.toList()));
                     final Consumer<Player> deathConsumer = this.event.onDeath();
                     this.event.sendMessage("&c" + tagged.size() + " &eplayers have been removed from the game.");
                     this.event.setTntTagState(TNTTagState.PREPARING);
@@ -216,7 +216,7 @@ public class TNTTagEvent extends PracticeEvent<TNTTagPlayer>
                 return;
             }
             if (this.time == 0) {
-                final List<TNTTagPlayer> players = this.event.getPlayers().values().stream().filter(EventPlayer::playerExists).filter(player -> !player.isTagged()).collect((Collector<? super TNTTagPlayer, ?, List<TNTTagPlayer>>)Collectors.toList());
+                final List<TNTTagPlayer> players = this.event.getPlayers().values().stream().filter(EventPlayer::playerExists).filter(player -> !player.isTagged()).collect(Collectors.toList()));
                 final int size = (int)Math.round(players.size() / 2.5);
                 this.event.setRound(this.event.getRound() + 1);
                 this.event.sendMessage("&eRound &c" + this.event.getRound() + " &ehas started!", "&f" + size + " &7players have been tagged!");

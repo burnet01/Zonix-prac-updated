@@ -232,21 +232,21 @@ public class RedroverEvent extends PracticeEvent<RedroverPlayer>
     }
     
     public List<UUID> getByState(final RedroverPlayer.RedroverState state) {
-        return this.players.values().stream().filter(player -> player.getState() == state).map((Function<? super RedroverPlayer, ?>)EventPlayer::getUuid).collect((Collector<? super Object, ?, List<UUID>>)Collectors.toList());
+        return this.players.values().stream().filter(player -> player.getState() == state).map(EventPlayer::getUuid).collect(Collectors.toList()));
     }
     
     @Override
     public List<String> getScoreboardLines(final Player player) {
         final List<String> strings = new ArrayList<String>();
         final int playingParkour = this.getByState(RedroverPlayer.RedroverState.WAITING).size() + this.getByState(RedroverPlayer.RedroverState.FIGHTING).size();
-        strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Players§7: " + playingParkour + "/" + this.getLimit());
+        strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Playersï¿½7: " + playingParkour + "/" + this.getLimit());
         final int countdown = this.getCountdownTask().getTimeUntilStart();
         if (countdown > 0 && countdown <= 60) {
-            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Starting§7: " + countdown + "s");
+            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Startingï¿½7: " + countdown + "s");
         }
         if (this.getPlayer(player) != null) {
             final RedroverPlayer redroverPlayer = this.getPlayer(player);
-            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "State§7: " + StringUtils.capitalize(redroverPlayer.getState().name().toLowerCase()));
+            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Stateï¿½7: " + StringUtils.capitalize(redroverPlayer.getState().name().toLowerCase()));
         }
         if (this.getFighting().size() > 0) {
             final StringJoiner joiner = new StringJoiner(ChatColor.WHITE + " vs " + ChatColor.WHITE);
@@ -266,10 +266,10 @@ public class RedroverEvent extends PracticeEvent<RedroverPlayer>
     public List<String> getScoreboardSpectator(final Player player) {
         final List<String> strings = new ArrayList<String>();
         final int playingParkour = this.getByState(RedroverPlayer.RedroverState.WAITING).size() + this.getByState(RedroverPlayer.RedroverState.FIGHTING).size();
-        strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Players§7: " + playingParkour + "/" + this.getLimit());
+        strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Playersï¿½7: " + playingParkour + "/" + this.getLimit());
         final int countdown = this.getCountdownTask().getTimeUntilStart();
         if (countdown > 0 && countdown <= 60) {
-            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Starting§7: " + countdown + "s");
+            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Startingï¿½7: " + countdown + "s");
         }
         if (this.getFighting().size() > 0) {
             final StringJoiner joiner = new StringJoiner(ChatColor.WHITE + " vs " + ChatColor.WHITE);

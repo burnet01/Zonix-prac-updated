@@ -209,13 +209,13 @@ public class WaterDropEvent extends PracticeEvent<WaterDropPlayer>
     public List<String> getScoreboardLines(final Player player) {
         final List<String> strings = (List<String>)Lists.newArrayList();
         final int playing = this.getPlayers().size();
-        strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Players§7: " + playing + "/" + this.getLimit());
+        strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Playersï¿½7: " + playing + "/" + this.getLimit());
         final int countdown = this.getCountdownTask().getTimeUntilStart();
         if (countdown > 0 && countdown <= 60) {
-            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Starting§7: " + countdown + "s");
+            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Startingï¿½7: " + countdown + "s");
         }
         if (this.getPlayer(player) != null && this.getPlayer(player).getState() != WaterDropPlayer.WaterDropState.LOBBY) {
-            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Round§7: " + this.getRound());
+            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Roundï¿½7: " + this.getRound());
         }
         return strings;
     }
@@ -288,7 +288,7 @@ public class WaterDropEvent extends PracticeEvent<WaterDropPlayer>
     }
     
     public List<UUID> getByState(final WaterDropPlayer.WaterDropState state) {
-        return this.players.values().stream().filter(player -> player.getState() == state).map((Function<? super WaterDropPlayer, ?>)EventPlayer::getUuid).collect((Collector<? super Object, ?, List<UUID>>)Collectors.toList());
+        return this.players.values().stream().filter(player -> player.getState() == state).map(EventPlayer::getUuid).collect(Collectors.toList()));
     }
     
     public int getRound() {

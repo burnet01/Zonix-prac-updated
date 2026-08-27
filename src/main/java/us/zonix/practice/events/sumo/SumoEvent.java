@@ -106,16 +106,8 @@ public class SumoEvent extends PracticeEvent<SumoPlayer>
                     player.teleport(this.getSpawnLocations().get(0).toBukkitLocation());
                     killer.teleport(this.getSpawnLocations().get(0).toBukkitLocation());
                 }
-                messages = new String[] { null };
-                new StringBuilder().append(ChatColor.RED).append("[Event] ").append(ChatColor.RED).append(player.getName()).append(ChatColor.GRAY).append(" has been eliminated");
-                if (killer == null) {
-                    string = ".";
-                }
-                else {
-                    string = " by " + ChatColor.GREEN + killer.getName();
-                }
-                messages[o] = sb.append(string).toString();
-                this.sendMessage(messages);
+                final String eliminatedBy = (killer == null) ? "." : (" by " + ChatColor.GREEN + killer.getName());
+                this.sendMessage(ChatColor.RED + "[Event] " + ChatColor.RED + player.getName() + ChatColor.GRAY + " has been eliminated" + eliminatedBy);
                 if (this.getByState(SumoPlayer.SumoState.WAITING).size() == 1) {
                     winner = Bukkit.getPlayer((UUID)this.getByState(SumoPlayer.SumoState.WAITING).stream().findFirst().get());
                     if (winner != null) {
@@ -192,7 +184,7 @@ public class SumoEvent extends PracticeEvent<SumoPlayer>
     }
     
     public List<UUID> getByState(final SumoPlayer.SumoState state) {
-        return this.players.values().stream().filter(player -> player.getState() == state).map((Function<? super SumoPlayer, ?>)EventPlayer::getUuid).collect((Collector<? super Object, ?, List<UUID>>)Collectors.toList());
+        return this.players.values().stream().filter(player -> player.getState() == state).map(EventPlayer::getUuid).collect(Collectors.toList()));
     }
     
     @Override

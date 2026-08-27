@@ -72,10 +72,7 @@ public abstract class PracticeEvent<K extends EventPlayer>
     }
     
     public Set<Player> getBukkitPlayers() {
-        final Stream<Object> filter = this.getPlayers().keySet().stream().filter(uuid -> this.plugin.getServer().getPlayer(uuid) != null);
-        final Server server = this.plugin.getServer();
-        Objects.requireNonNull(server);
-        return filter.map((Function<? super Object, ?>)server::getPlayer).collect((Collector<? super Object, ?, Set<Player>>)Collectors.toSet());
+        return this.getPlayers().keySet().stream().map(uuid -> this.plugin.getServer().getPlayer(uuid)).filter(Objects::nonNull).collect(Collectors.toSet());
     }
     
     public void join(final Player player) {
@@ -221,7 +218,7 @@ public abstract class PracticeEvent<K extends EventPlayer>
     }
     
     public List<String> getScoreboardLines(final Player player) {
-        return (List<String>)Lists.newArrayList();
+        return new ArrayList<String>();
     }
     
     public List<String> getScoreboardSpectator(final Player player) {

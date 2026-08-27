@@ -41,8 +41,8 @@ public class KitManager
         final ItemStack[] contents;
         final ItemStack[] armor;
         final ItemStack[] kitEditContents;
-        final List excludedArenas;
-        final List arenaWhiteList;
+        final List<String> excludedArenas;
+        final List<String> arenaWhiteList;
         final ItemStack icon;
         final boolean enabled;
         final boolean ranked;
@@ -55,12 +55,12 @@ public class KitManager
         final boolean bestOfThree;
         final boolean premium;
         final int priority;
-        final Optional knockback;
+        final Optional<KnockbackProfile> knockback;
         final Kit kit;
         kitSection.getKeys(false).forEach(name -> {
-            contents = ((List)configurationSection.get(name + ".contents")).toArray(new ItemStack[0]);
-            armor = ((List)configurationSection.get(name + ".armor")).toArray(new ItemStack[0]);
-            kitEditContents = ((List)configurationSection.get(name + ".kitEditContents")).toArray(new ItemStack[0]);
+            contents = ((List<ItemStack>)configurationSection.get(name + ".contents")).toArray(new ItemStack[0]);
+            armor = ((List<ItemStack>)configurationSection.get(name + ".armor")).toArray(new ItemStack[0]);
+            kitEditContents = ((List<ItemStack>)configurationSection.get(name + ".kitEditContents")).toArray(new ItemStack[0]);
             excludedArenas = configurationSection.getStringList(name + ".excludedArenas");
             arenaWhiteList = configurationSection.getStringList(name + ".arenaWhitelist");
             icon = (ItemStack)configurationSection.get(name + ".icon");

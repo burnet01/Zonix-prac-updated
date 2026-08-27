@@ -221,7 +221,7 @@ public class PlayerManager
     }
     
     public List<Player> getPlayersByState(final PlayerState state) {
-        return Bukkit.getOnlinePlayers().parallelStream().filter(player -> this.getPlayerData(player.getUniqueId()).getPlayerState().equals(state)).collect((Collector<? super Object, ?, List<Player>>)Collectors.toList());
+        return Bukkit.getOnlinePlayers().parallelStream().filter(player -> this.getPlayerData(player.getUniqueId()).getPlayerState().equals(state)).collect(Collectors.toList());
     }
     
     public void giveLobbyItems(final Player player) {
@@ -267,7 +267,7 @@ public class PlayerManager
                     kitSection.getKeys(false).forEach(kitKey -> {
                         kitIndex = Integer.parseInt(kitKey);
                         displayName = configurationSection.getString(kitKey + ".displayName");
-                        contents = ((List)configurationSection.get(kitKey + ".contents")).toArray(new ItemStack[0]);
+                        contents = ((List<ItemStack>)configurationSection.get(kitKey + ".contents")).toArray(new ItemStack[0]);
                         playerKit = new PlayerKit(kit.getName(), kitIndex, contents, displayName);
                         playerData.addPlayerKit(kitIndex, playerKit);
                     });
@@ -289,8 +289,13 @@ public class PlayerManager
                 eloMap.put(document.getString("uuid"), ladderDocument.getInteger("rankedElo"));
             }
         }
-        eloMap = eloMap.entrySet().stream().sorted(Comparator.comparing((Function<? super Object, ? extends Comparable>)Map.Entry::getValue).reversed()).collect((Supplier<HashMap<String, Integer>>)LinkedHashMap::new, (map, e) -> map.put(e.getKey(), (Integer)e.getValue()), HashMap::putAll);
-        return eloMap;
+        final List<Map.Entry<String, Integer>> entries = new ArrayList<Map.Entry<String, Integer>>(eloMap.entrySet());
+        entries.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+        final HashMap<String, Integer> sorted = new LinkedHashMap<String, Integer>();
+        for (final Map.Entry<String, Integer> entry : entries) {
+            sorted.put(entry.getKey(), entry.getValue());
+        }
+        return sorted;
     }
     
     public void sendToSpawnAndReset(final Player player) {
