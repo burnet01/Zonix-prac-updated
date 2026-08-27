@@ -71,11 +71,11 @@ public class InventorySnapshot
         }
         int potCount = 0;
         if (potionMatch) {
-            potCount = Arrays.stream(contents).filter(Objects::nonNull).mapToInt(item -> (int)item.getDurability()).filter(d -> d == 16421).count();
+            potCount = (int)Arrays.stream(contents).filter(Objects::nonNull).mapToInt(item -> item.getDurability()).filter(d -> d == 16421).count();
             this.inventoryUI.setItem(45, new InventoryUI.EmptyClickableItem(ItemUtil.reloreItem(ItemUtil.createItem(Material.POTION, ChatColor.LIGHT_PURPLE.toString() + ChatColor.BOLD + "Potions", potCount, (short)16421), ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + "* " + ChatColor.WHITE + "Health Pots: " + ChatColor.GRAY + potCount + " Potion" + ((potCount > 1) ? "s" : ""), ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + "* " + ChatColor.WHITE + "Missed Pots: " + ChatColor.GRAY + playerData.getMissedPots() + " Potion" + ((playerData.getMissedPots() > 1) ? "s" : ""))));
         }
         else if (soupMatch) {
-            final int soupCount = Arrays.stream(contents).filter(Objects::nonNull).map(item -> item.getType()).filter(d -> d == Material.MUSHROOM_SOUP).count();
+            final int soupCount = (int)Arrays.stream(contents).filter(Objects::nonNull).map(item -> item.getType()).filter(d -> d == Material.MUSHROOM_SOUP).count();
             this.inventoryUI.setItem(45, new InventoryUI.EmptyClickableItem(ItemUtil.createItem(Material.MUSHROOM_SOUP, ChatColor.GOLD.toString() + ChatColor.BOLD + "Soups Left: " + ChatColor.WHITE + soupCount, soupCount, (short)16421)));
         }
         final double roundedHealth = Math.round(health / 2.0 * 2.0) / 2.0;

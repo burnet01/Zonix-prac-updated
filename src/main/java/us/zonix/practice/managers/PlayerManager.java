@@ -5,6 +5,7 @@ import us.zonix.practice.util.PlayerUtil;
 import us.zonix.practice.queue.QueueType;
 import us.zonix.practice.arena.Arena;
 import java.util.function.Supplier;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.function.Function;
 import java.util.Comparator;
@@ -122,9 +123,9 @@ public class PlayerManager
         }
         final Document document = new Document();
         final Document statisticsDocument = new Document();
-        final Document document2;
-        Document ladderDocument;
+        final Document document2 = new Document();
         playerData.getRankedWins().forEach((key, value) -> {
+            Document ladderDocument;
             if (document2.containsKey(key)) {
                 ladderDocument = (Document)document2.get(key);
             }
@@ -135,9 +136,9 @@ public class PlayerManager
             document2.put(key, (Object)ladderDocument);
             return;
         });
-        final Document document3;
-        Document ladderDocument2;
+        final Document document3 = new Document();
         playerData.getRankedLosses().forEach((key, value) -> {
+            Document ladderDocument2;
             if (document3.containsKey(key)) {
                 ladderDocument2 = (Document)document3.get(key);
             }
@@ -148,9 +149,9 @@ public class PlayerManager
             document3.put(key, (Object)ladderDocument2);
             return;
         });
-        final Document document4;
-        Document ladderDocument3;
+        final Document document4 = new Document();
         playerData.getRankedElo().forEach((key, value) -> {
+            Document ladderDocument3;
             if (document4.containsKey(key)) {
                 ladderDocument3 = (Document)document4.get(key);
             }
@@ -170,14 +171,12 @@ public class PlayerManager
         document.put("eloRank", (Object)EloRank.getRankByElo(playerData.getGlobalStats("ELO")).name());
         PracticeMongo.getInstance().getPlayers().replaceOne(Filters.eq("uuid", playerData.getUniqueId().toString()), document, new ReplaceOptions().upsert(true));
         final Config config = new Config("/players/" + playerData.getUniqueId().toString(), this.plugin);
-        final Map<Integer, PlayerKit> playerKits;
-        final Config config2;
         this.plugin.getKitManager().getKits().forEach(kit -> {
-            playerKits = playerData.getPlayerKits(kit.getName());
+            final Map<Integer, PlayerKit> playerKits = playerData.getPlayerKits(kit.getName());
             if (playerKits != null) {
                 playerKits.forEach((key, value) -> {
-                    config2.getConfig().set("playerkits." + kit.getName() + "." + key + ".displayName", (Object)value.getDisplayName());
-                    config2.getConfig().set("playerkits." + kit.getName() + "." + key + ".contents", (Object)value.getContents());
+                    config.getConfig().set("playerkits." + kit.getName() + "." + key + ".displayName", (Object)value.getDisplayName());
+                    config.getConfig().set("playerkits." + kit.getName() + "." + key + ".contents", (Object)value.getContents());
                 });
             }
             return;
