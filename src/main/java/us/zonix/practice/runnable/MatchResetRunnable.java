@@ -42,16 +42,11 @@ public class MatchResetRunnable extends BukkitRunnable
             }).build();
         }
         else if (this.match.getOriginalBlockChanges().size() > 0) {
-            final EditSession editSession;
-            final Iterator<BlockState> iterator;
-            BlockState blockState;
             TaskManager.IMP.async(() -> {
-                editSession = new EditSessionBuilder(this.match.getArena().getA().getWorld()).fastmode(true).allowedRegionsEverywhere().autoQueue(false).limitUnlimited().build();
-                this.match.getOriginalBlockChanges().iterator();
-                while (iterator.hasNext()) {
-                    blockState = iterator.next();
+                final EditSession editSession = new EditSessionBuilder(this.match.getArena().getA().getWorld()).fastmode(true).allowedRegionsEverywhere().autoQueue(false).limitUnlimited().build();
+                for (final BlockState blockState : this.match.getOriginalBlockChanges()) {
                     try {
-                        editSession.setBlock(new Vector((double)blockState.getLocation().getBlockX(), (double)blockState.getLocation().getBlockY(), blockState.getLocation().getZ()), new BaseBlock(blockState.getTypeId(), (int)blockState.getRawData()));
+                        editSession.setBlock(new Vector(blockState.getLocation().getBlockX(), blockState.getLocation().getBlockY(), blockState.getLocation().getZ()), new BaseBlock(blockState.getTypeId(), blockState.getRawData()));
                     }
                     catch (Exception ex) {}
                 }

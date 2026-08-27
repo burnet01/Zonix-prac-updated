@@ -93,9 +93,8 @@ public class WaterDropEvent extends PracticeEvent<WaterDropPlayer>
     
     @Override
     public Consumer<Player> onDeath() {
-        final WaterDropPlayer data;
         return player -> {
-            data = this.getPlayer(player);
+            final WaterDropPlayer data = this.getPlayer(player);
             if (data.getState() != WaterDropPlayer.WaterDropState.LOBBY) {
                 this.possiblePlayers.add(player.getUniqueId());
                 this.teleportToSpawn(player);
@@ -229,34 +228,23 @@ public class WaterDropEvent extends PracticeEvent<WaterDropPlayer>
         for (final Block block : cuboid) {
             blocks.add(block);
         }
-        final EditSession editSession;
-        final List<Block> list;
-        final Iterator<Block> iterator2;
-        Block entry;
-        int i;
-        final int n;
-        final TaskManager imp;
         TaskManager.IMP.async(() -> {
-            editSession = new EditSessionBuilder(this.cuboid.getWorld().getName()).fastmode(true).allowedRegionsEverywhere().autoQueue(false).limitUnlimited().build();
-            list.iterator();
-            while (iterator2.hasNext()) {
-                entry = iterator2.next();
+            final EditSession editSession = new EditSessionBuilder(this.cuboid.getWorld().getName()).fastmode(true).allowedRegionsEverywhere().autoQueue(false).limitUnlimited().build();
+            for (final Block entry : blocks) {
                 try {
-                    editSession.setBlock(new Vector((double)entry.getLocation().getBlockX(), (double)entry.getLocation().getBlockY(), entry.getLocation().getZ()), new BaseBlock(9, 0));
+                    editSession.setBlock(new Vector(entry.getLocation().getBlockX(), entry.getLocation().getBlockY(), entry.getLocation().getZ()), new BaseBlock(9, 0));
                 }
                 catch (Exception ex) {}
             }
-            Collections.shuffle(list);
-            for (i = 0; i < n; ++i) {
+            Collections.shuffle(blocks);
+            for (int i = 0; i < blocksAmount; ++i) {
                 try {
-                    editSession.setBlock(new Vector((double)list.get(i).getLocation().getBlockX(), (double)list.get(i).getLocation().getBlockY(), list.get(i).getLocation().getZ()), new BaseBlock(35, 0));
+                    editSession.setBlock(new Vector(blocks.get(i).getLocation().getBlockX(), blocks.get(i).getLocation().getBlockY(), blocks.get(i).getLocation().getZ()), new BaseBlock(35, 0));
                 }
                 catch (Exception ex2) {}
             }
             editSession.flushQueue();
-            imp = TaskManager.IMP;
-            Objects.requireNonNull(list);
-            imp.task(list::clear);
+            TaskManager.IMP.task(blocks::clear);
         });
     }
     
