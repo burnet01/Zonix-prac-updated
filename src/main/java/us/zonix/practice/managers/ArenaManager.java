@@ -104,6 +104,9 @@ public class ArenaManager
         final FileConfiguration fileConfig = (FileConfiguration)this.arenasFile.getConfiguration();
         fileConfig.set("arenas", (Object)null);
         this.arenas.forEach((arenaName, arena) -> {
+            if (arena.getA() == null || arena.getB() == null) {
+                return;
+            }
             final String a = CustomLocation.locationToString(arena.getA());
             final String b = CustomLocation.locationToString(arena.getB());
             final String min = CustomLocation.locationToString(arena.getMin());

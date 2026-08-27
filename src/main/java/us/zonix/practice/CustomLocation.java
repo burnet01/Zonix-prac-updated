@@ -52,6 +52,9 @@ public class CustomLocation
     }
     
     public static String locationToString(final CustomLocation loc) {
+        if (loc == null) {
+            return null;
+        }
         final StringJoiner joiner = new StringJoiner(", ");
         joiner.add(Double.toString(loc.getX()));
         joiner.add(Double.toString(loc.getY()));
