@@ -192,6 +192,7 @@ public class Practice extends JavaPlugin
         this.eventManager = new EventManager();
         this.tournamentManager = new TournamentManager();
         this.inventoryManager = new InventoryManager();
+        this.botManager = new BotManager();
         this.timerManager = new TimerManager(this);
         this.pvpClassHandler = new PvPClassHandler();
         if (this.timerManager.getTimer(EnderpearlTimer.class) == null) {

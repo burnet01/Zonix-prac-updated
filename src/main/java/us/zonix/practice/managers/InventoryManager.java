@@ -777,6 +777,10 @@ public class InventoryManager
     
     private void handleTrainMapClick(final Player player, final ZonixBot.BotDifficulty difficulty, final Kit kit) {
         player.closeInventory();
+        if (this.plugin.getArenaManager().getRandomArena(kit) == null) {
+            player.sendMessage(ChatColor.RED + "No enabled arena is available for this kit. Ask an admin to create one (/arena create <name>, /arena a, /arena b, /arena enable).");
+            return;
+        }
         this.plugin.getBotManager().createMatch(player, kit, difficulty);
     }
     
