@@ -64,16 +64,12 @@ public class MatchListener implements Listener
             this.plugin.getArenaManager().setArenaMatchUUID(match.getStandaloneArena(), match.getMatchId());
         }
         final Set<Player> matchPlayers = new HashSet<Player>();
-        final Set<Player> set;
-        final PlayerData playerData;
-        final Match match2;
-        final CustomLocation locationA;
-        final CustomLocation locationB;
-        final Kit kit2;
+        final Match match2 = match;
+        final Kit kit2 = match.getKit();
         match.getTeams().forEach(team -> team.alivePlayers().forEach(player -> {
-            set.add(player);
+            matchPlayers.add(player);
             this.plugin.getMatchManager().removeMatchRequests(player.getUniqueId());
-            playerData = this.plugin.getPlayerManager().getPlayerData(player.getUniqueId());
+            final PlayerData playerData = this.plugin.getPlayerManager().getPlayerData(player.getUniqueId());
             player.setAllowFlight(false);
             player.setFlying(false);
             playerData.setCurrentMatchID(match2.getMatchId());
@@ -83,8 +79,8 @@ public class MatchListener implements Listener
             playerData.setCombo(0);
             playerData.setHits(0);
             PlayerUtil.clearPlayer(player);
-            locationA = ((match2.getStandaloneArena() != null) ? match2.getStandaloneArena().getA() : match2.getArena().getA());
-            locationB = ((match2.getStandaloneArena() != null) ? match2.getStandaloneArena().getB() : match2.getArena().getB());
+            final CustomLocation locationA = ((match2.getStandaloneArena() != null) ? match2.getStandaloneArena().getA() : match2.getArena().getA());
+            final CustomLocation locationB = ((match2.getStandaloneArena() != null) ? match2.getStandaloneArena().getB() : match2.getArena().getB());
             player.teleport((team.getTeamID() == 1) ? locationA.toBukkitLocation() : locationB.toBukkitLocation());
             if (kit2.isCombo()) {
                 player.setMaximumNoDamageTicks(4);
@@ -118,17 +114,11 @@ public class MatchListener implements Listener
             team2.revivePlayers();
         }
         final Set<Player> matchPlayers = new HashSet<Player>();
-        final Set<Player> set;
-        final PlayerData playerData;
-        final Match match2;
-        final CustomLocation locationA;
-        final CustomLocation locationB;
-        final CustomLocation customLocation;
-        final CustomLocation customLocation2;
+        final Match match2 = match;
         match.getTeams().forEach(team -> team.alivePlayers().forEach(player -> {
-            set.add(player);
+            matchPlayers.add(player);
             this.plugin.getMatchManager().removeMatchRequests(player.getUniqueId());
-            playerData = this.plugin.getPlayerManager().getPlayerData(player.getUniqueId());
+            final PlayerData playerData = this.plugin.getPlayerManager().getPlayerData(player.getUniqueId());
             this.plugin.getMatchManager().giveKits(player, match2.getKit());
             player.setAllowFlight(false);
             player.setFlying(false);
@@ -141,9 +131,9 @@ public class MatchListener implements Listener
             PlayerUtil.clearPlayer(player);
             playerData.setPlayerState(PlayerState.FIGHTING);
             this.plugin.getMatchManager().removeDeathSpectator(match2, player);
-            locationA = ((match2.getStandaloneArena() != null) ? match2.getStandaloneArena().getA() : match2.getArena().getA());
-            locationB = ((match2.getStandaloneArena() != null) ? match2.getStandaloneArena().getB() : match2.getArena().getB());
-            this.plugin.getServer().getScheduler().runTaskLater((Plugin)this.plugin, () -> player.teleport((team.getTeamID() == 1) ? customLocation.toBukkitLocation() : customLocation2.toBukkitLocation()), 5L);
+            final CustomLocation locationA = ((match2.getStandaloneArena() != null) ? match2.getStandaloneArena().getA() : match2.getArena().getA());
+            final CustomLocation locationB = ((match2.getStandaloneArena() != null) ? match2.getStandaloneArena().getB() : match2.getArena().getB());
+            this.plugin.getServer().getScheduler().runTaskLater((Plugin)this.plugin, () -> player.teleport((team.getTeamID() == 1) ? locationA.toBukkitLocation() : locationB.toBukkitLocation()), 5L);
         }));
         for (final Player player2 : matchPlayers) {
             for (final Player online : this.plugin.getServer().getOnlinePlayers()) {

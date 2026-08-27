@@ -82,7 +82,7 @@ public class TournamentRunnable extends BukkitRunnable
                         final Player leaderA = this.plugin.getServer().getPlayer(teamA.getLeader());
                         final Player leaderB = this.plugin.getServer().getPlayer(teamB.getLeader());
                         match.broadcast(ChatColor.RED + "Starting tournament match. " + ChatColor.WHITE + "(" + leaderA.getName() + " vs " + leaderB.getName() + ")");
-                        final Match match2;
+                        final Match match2 = match;
                         this.plugin.getServer().getScheduler().runTask((Plugin)this.plugin, () -> {
                             this.plugin.getMatchManager().createMatch(match2);
                             this.tournament.addMatch(match2.getMatchId());

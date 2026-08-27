@@ -37,24 +37,20 @@ public class VisibilityCommand extends Command
             return true;
         }
         playerData.getOptions().setVisibility(!playerData.getOptions().isVisibility());
-        final PlayerData playerData2;
-        final Player player2;
-        final boolean playerSeen;
-        final boolean pSeen;
         this.plugin.getServer().getOnlinePlayers().forEach(p -> {
-            playerSeen = (playerData2.getOptions().isVisibility() && player2.hasPermission("practice.visibility") && Practice.getInstance().getPlayerManager().getPlayerData(player2.getUniqueId()).getPlayerState() == PlayerState.SPAWN);
-            pSeen = (playerData2.getOptions().isVisibility() && player2.hasPermission("practice.visibility") && Practice.getInstance().getPlayerManager().getPlayerData(p.getUniqueId()).getPlayerState() == PlayerState.SPAWN);
+            final boolean playerSeen = (playerData.getOptions().isVisibility() && player.hasPermission("practice.visibility") && Practice.getInstance().getPlayerManager().getPlayerData(player.getUniqueId()).getPlayerState() == PlayerState.SPAWN);
+            final boolean pSeen = (playerData.getOptions().isVisibility() && player.hasPermission("practice.visibility") && Practice.getInstance().getPlayerManager().getPlayerData(p.getUniqueId()).getPlayerState() == PlayerState.SPAWN);
             if (playerSeen) {
-                p.showPlayer(player2);
+                p.showPlayer(player);
             }
             else {
-                p.hidePlayer(player2);
+                p.hidePlayer(player);
             }
             if (pSeen) {
-                player2.showPlayer(p);
+                player.showPlayer(p);
             }
             else {
-                player2.hidePlayer(p);
+                player.hidePlayer(p);
             }
             return;
         });
