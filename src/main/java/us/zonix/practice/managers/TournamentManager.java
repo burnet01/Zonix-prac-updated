@@ -12,7 +12,6 @@ import org.bukkit.Bukkit;
 import us.zonix.practice.team.KillableTeam;
 import us.zonix.practice.util.TeamUtil;
 import us.zonix.practice.tournament.TournamentTeam;
-import me.maiko.dexter.profile.Profile;
 import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
@@ -80,7 +79,7 @@ public class TournamentManager
         player.sendMessage(ChatColor.RED.toString() + "[Tournament] " + ChatColor.GRAY + "You left the tournament.");
         this.players.remove(player.getUniqueId());
         this.plugin.getPlayerManager().sendToSpawnAndReset(player);
-        tournament.broadcast(ChatColor.RED.toString() + "[Tournament] " + Profile.getByUuidIfAvailable(player.getUniqueId()).getRank().getGameColor() + "" + player.getName() + ChatColor.WHITE + " left the tournament. [" + tournament.getPlayers().size() + "/" + tournament.getSize() + "]");
+        tournament.broadcast(ChatColor.RED.toString() + "[Tournament] " + player.getName() + ChatColor.WHITE + " left the tournament. [" + tournament.getPlayers().size() + "/" + tournament.getSize() + "]");
         if (team != null) {
             team.killPlayer(player.getUniqueId());
             if (team.getAlivePlayers().size() == 0) {
@@ -142,25 +141,10 @@ public class TournamentManager
     }
     
     private void playerJoined(final Tournament tournament, final Player player, final boolean party) {
-        if (Practice.getInstance().isRegionLock() && !party) {
-            final Profile profile = Profile.getByUuid(player.getUniqueId());
-            if (profile != null && profile.hasVpnData()) {
-                final Stream<Object> stream = Practice.getInstance().getAllowedRegions().stream();
-                final String continentCode = profile.getVpnData().getContinentCode();
-                Objects.requireNonNull(continentCode);
-                if (stream.noneMatch((Predicate<? super Object>)continentCode::equalsIgnoreCase)) {
-                    player.sendMessage(ChatColor.RED + "Your region does not allow you to join premium/ranked queues on this practice sub-server. Make sure you are on the right proxy and sub-server.");
-                    return;
-                }
-            }
-            else {
-                Bukkit.getOnlinePlayers().parallelStream().filter(online -> online.hasPermission("core.superadmin")).forEach(online -> online.sendMessage(ChatColor.RED + "[!] Couldn't find " + player.getName() + "'s region! Make sure the AntiVPN is working correctly, if not please use /regionlock toggle off to disable region-lock."));
-            }
-        }
         tournament.addPlayer(player.getUniqueId());
         this.players.put(player.getUniqueId(), tournament.getId());
         this.plugin.getPlayerManager().sendToSpawnAndReset(player);
-        tournament.broadcast(ChatColor.RED.toString() + "[Tournament] " + Profile.getByUuidIfAvailable(player.getUniqueId()).getRank().getGameColor() + "" + player.getName() + ChatColor.WHITE + " joined the tournament. [" + tournament.getPlayers().size() + "/" + tournament.getSize() + "]");
+        tournament.broadcast(ChatColor.RED.toString() + "[Tournament] " + player.getName() + ChatColor.WHITE + " joined the tournament. [" + tournament.getPlayers().size() + "/" + tournament.getSize() + "]");
     }
     
     public void joinTournament(final Integer id, final Player player) {

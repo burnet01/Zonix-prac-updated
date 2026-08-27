@@ -2,7 +2,6 @@ package us.zonix.practice.commands;
 
 import org.bukkit.Bukkit;
 import java.util.Optional;
-import me.maiko.dexter.profile.Profile;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.Collection;
@@ -92,8 +91,7 @@ public class RegionLockCommand extends Command
                 if (!player.isPresent()) {
                     return this.playerNotFound(commandSender, args[1]);
                 }
-                final Profile profile = Profile.getByUuid(player.get().getUniqueId());
-                commandSender.sendMessage(profile.hasVpnData() ? (ChatColor.GREEN + String.format("%s's continent is: %s", player.get().getName(), profile.getVpnData().getContinent())) : (ChatColor.RED + "That player's region is not defined."));
+                commandSender.sendMessage(ChatColor.RED + "Region tracking is not available on this server.");
                 return true;
             }
             default: {

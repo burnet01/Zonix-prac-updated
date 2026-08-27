@@ -4,7 +4,6 @@ import java.util.List;
 import us.zonix.practice.inventory.InventorySnapshot;
 import us.zonix.practice.runnable.RematchRunnable;
 import org.bukkit.entity.Entity;
-import me.maiko.dexter.profile.Profile;
 import java.util.stream.Stream;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.plugin.Plugin;
@@ -272,7 +271,7 @@ public class MatchManager
     public void addSpectator(final Player player, final PlayerData playerData, final Player target, final Match targetMatch) {
         this.spectators.put(player.getUniqueId(), targetMatch.getMatchId());
         if (targetMatch.getMatchState() != MatchState.ENDING && !targetMatch.haveSpectated(player.getUniqueId())) {
-            final String spectatorName = Profile.getByUuidIfAvailable(player.getUniqueId()).getRank().getGameColor() + player.getName();
+            final String spectatorName = player.getName();
             final String spectatorMessage = ChatColor.WHITE.toString() + ChatColor.BOLD + "* " + ChatColor.GREEN + spectatorName + ChatColor.GRAY + " is spectating your match.";
             if (!player.hasMetadata("modmode")) {
                 targetMatch.broadcast(spectatorMessage);

@@ -2,7 +2,7 @@ package us.zonix.practice.commands;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import me.maiko.dexter.profile.Profile;
+import org.bukkit.Bukkit;
 import java.util.UUID;
 import java.util.Map;
 import us.zonix.practice.util.ItemBuilder;
@@ -60,7 +60,7 @@ public class LeaderboardCommand extends Command
             final HashMap<String, Integer> eloMap = this.plugin.getPlayerManager().findTopEloByKit(kit.getName(), 10);
             int position = 1;
             for (final Map.Entry<String, Integer> entry : eloMap.entrySet()) {
-                final String username = Profile.getNameByUUID(UUID.fromString(entry.getKey()));
+                final String username = Bukkit.getOfflinePlayer(UUID.fromString(entry.getKey())).getName();
                 if (username != null) {
                     switch (position) {
                         case 1: {

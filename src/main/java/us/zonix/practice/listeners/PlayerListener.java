@@ -25,7 +25,6 @@ import us.zonix.practice.events.woolmixup.WoolMixUpEvent;
 import us.zonix.practice.events.waterdrop.WaterDropEvent;
 import us.zonix.practice.events.parkour.ParkourEvent;
 import org.bukkit.command.CommandSender;
-import me.maiko.dexter.Dexter;
 import us.zonix.practice.kit.PlayerKit;
 import org.bukkit.potion.Potion;
 import us.zonix.practice.match.MatchState;
@@ -342,10 +341,6 @@ public class PlayerListener implements Listener
                         }
                         case SPAWN: {
                             if (item == null) {
-                                return;
-                            }
-                            if (Dexter.getInstance().getShutdownTask() != null) {
-                                player.sendMessage(ChatColor.RED + "Server is about to restart.");
                                 return;
                             }
                             switch (item.getType()) {

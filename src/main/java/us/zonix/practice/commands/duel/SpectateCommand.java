@@ -4,7 +4,6 @@ import us.zonix.practice.match.Match;
 import us.zonix.practice.events.PracticeEvent;
 import us.zonix.practice.party.Party;
 import us.zonix.practice.player.PlayerData;
-import me.maiko.dexter.profile.Profile;
 import java.util.UUID;
 import us.zonix.practice.match.MatchTeam;
 import us.zonix.practice.events.redrover.RedroverEvent;
@@ -101,7 +100,7 @@ public class SpectateCommand extends Command
                 }
                 match.removeSpectator(player.getUniqueId());
             }
-            final String targetName = Profile.getByUuidIfAvailable(target.getUniqueId()).getRank().getGameColor() + target.getName();
+            final String targetName = target.getName();
             player.sendMessage(ChatColor.YELLOW + "You are now spectating " + ChatColor.GREEN + targetName + ChatColor.YELLOW + ".");
             this.plugin.getMatchManager().addSpectator(player, playerData, target, targetMatch);
             return true;
