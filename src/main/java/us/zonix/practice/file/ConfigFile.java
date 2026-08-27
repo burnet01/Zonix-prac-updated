@@ -20,7 +20,19 @@ public class ConfigFile
         if (!this.file.getParentFile().exists()) {
             this.file.getParentFile().mkdir();
         }
-        plugin.saveResource(name + ".yml", false);
+        if (!this.file.exists() || this.file.length() == 0L) {
+            if (plugin.getResource(name + ".yml") != null) {
+                plugin.saveResource(name + ".yml", false);
+            }
+            else {
+                try {
+                    this.file.createNewFile();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         this.configuration = YamlConfiguration.loadConfiguration(this.file);
     }
     

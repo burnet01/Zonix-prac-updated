@@ -139,6 +139,7 @@ public class ArenaCommand extends Command
                 break;
             }
         }
+        this.plugin.getArenaManager().saveArenas();
         return true;
     }
     

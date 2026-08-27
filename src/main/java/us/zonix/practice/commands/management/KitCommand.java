@@ -311,6 +311,7 @@ public class KitCommand extends Command
                 break;
             }
         }
+        this.plugin.getKitManager().saveKits();
         return true;
     }
     

@@ -113,15 +113,40 @@ public class Practice extends JavaPlugin
     private List<String> allowedRegions;
     
     public void onDisable() {
-        for (final PlayerData playerData : this.playerManager.getAllData()) {
-            this.playerManager.saveData(playerData);
+        try {
+            for (final PlayerData playerData : this.playerManager.getAllData()) {
+                this.playerManager.saveData(playerData);
+            }
         }
-        for (final Match match : this.matchManager.getMatches().values()) {
-            Bukkit.getServer().getScheduler().runTask((Plugin)this, (BukkitRunnable)new MatchResetRunnable(match));
-            match.getEntitiesToRemove().forEach(Entity::remove);
+        catch (Exception e) {
+            e.printStackTrace();
         }
-        this.arenaManager.saveArenas();
-        this.kitManager.saveKits();
+        try {
+            for (final Match match : this.matchManager.getMatches().values()) {
+                match.getEntitiesToRemove().forEach(Entity::remove);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            this.arenaManager.saveArenas();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            this.kitManager.saveKits();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            this.spawnManager.saveLocationsFile();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         PracticeMongo.getInstance().getClient().close();
     }
     
