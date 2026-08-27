@@ -4,7 +4,6 @@ import com.google.common.collect.HashBasedTable;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.EventHandler;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.entity.PotionEffectExpireEvent;
 import java.util.Collection;
 import org.bukkit.inventory.PlayerInventory;
 import java.util.Iterator;
@@ -125,19 +124,6 @@ public abstract class PvPClass implements Listener
         player.addPotionEffect(effect, true);
         if (shouldCancel && effect.getDuration() > 120 && effect.getDuration() < 9600) {
             PvPClass.restores.remove((Object)player.getUniqueId(), (Object)effect.getType());
-        }
-    }
-    
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onPotionEffectExpire(final PotionEffectExpireEvent event) {
-        final LivingEntity livingEntity = event.getEntity();
-        if (livingEntity instanceof Player) {
-            final Player player = (Player)livingEntity;
-            final PotionEffect previous = (PotionEffect)PvPClass.restores.remove((Object)player.getUniqueId(), (Object)event.getEffect().getType());
-            if (previous != null && previous.getDuration() < 1000000) {
-                event.setCancelled(true);
-                player.addPotionEffect(previous, true);
-            }
         }
     }
     

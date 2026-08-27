@@ -32,15 +32,15 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
     protected int z2;
     
     public Cuboid(final Map<String, Object> map) {
-        this.worldName = map.get("worldName");
+        this.worldName = (String)map.get("worldName");
         this.locationOne = null;
         this.locationTwo = null;
-        this.x1 = map.get("x1");
-        this.y1 = map.get("y1");
-        this.z1 = map.get("z1");
-        this.x2 = map.get("x2");
-        this.y2 = map.get("y2");
-        this.z2 = map.get("z2");
+        this.x1 = (int)map.get("x1");
+        this.y1 = (int)map.get("y1");
+        this.z1 = (int)map.get("z1");
+        this.x2 = (int)map.get("x2");
+        this.y2 = (int)map.get("y2");
+        this.z2 = (int)map.get("z2");
     }
     
     public Cuboid(final World world, final int x1, final int y1, final int z1, final int x2, final int y2, final int z2) {

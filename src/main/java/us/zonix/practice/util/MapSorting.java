@@ -13,7 +13,7 @@ public class MapSorting
     private static final Function EXTRACT_VALUE;
     
     public static <T, V extends Comparable<V>> List<Map.Entry<T, V>> sortedValues(final Map<T, V> map) {
-        return sortedValues(map, (Comparator<V>)Ordering.natural());
+        return sortedValues(map, Ordering.natural());
     }
     
     public static <T, V> List<Map.Entry<T, V>> sortedValues(final Map<T, V> map, final Comparator<V> valueComparator) {

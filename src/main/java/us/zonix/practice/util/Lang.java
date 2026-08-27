@@ -3,7 +3,6 @@ package us.zonix.practice.util;
 import org.bukkit.craftbukkit.v1_8_R3.potion.CraftPotionEffectType;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.enchantments.Enchantment;
-import com.google.common.base.MoreObjects;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import java.io.IOException;
@@ -72,7 +71,8 @@ public class Lang
     
     public static String fromStack(final ItemStack stack) {
         final String node = translatableFromStack(stack);
-        return (String)MoreObjects.firstNonNull((Object)Lang.translations.get(node), (Object)node);
+        final String val = Lang.translations.get(node);
+        return (val == null) ? node : val;
     }
     
     public static String translatableFromEnchantment(final Enchantment ench) {
@@ -82,7 +82,8 @@ public class Lang
     
     public static String fromEnchantment(final Enchantment ench) {
         final String node = translatableFromEnchantment(ench);
-        return (String)MoreObjects.firstNonNull((Object)Lang.translations.get(node), (Object)node);
+        final String val = Lang.translations.get(node);
+        return (val == null) ? node : val;
     }
     
     public static String translatableFromPotionEffectType(final PotionEffectType effectType) {

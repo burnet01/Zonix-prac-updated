@@ -260,23 +260,23 @@ public class InventoryManager
                     public void onClick(final InventoryClickEvent e) {
                         final Player player = (Player)e.getWhoClicked();
                         if (event.getName().equalsIgnoreCase("Parkour") && !player.hasPermission("practice.events.parkour")) {
-                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with " + your current rank.);
+                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with your current rank.");
                             return;
                         }
                         if (event.getName().equalsIgnoreCase("Sumo") && !player.hasPermission("practice.events.sumo")) {
-                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with " + your current rank.);
+                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with your current rank.");
                             return;
                         }
                         if (event.getName().equalsIgnoreCase("RedLightGreenLight") && !player.hasPermission("practice.events.redlightgreenlight")) {
-                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with " + your current rank.);
+                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with your current rank.");
                             return;
                         }
                         if (event.getName().equalsIgnoreCase("BlockParty") && !player.hasPermission("practice.events.blockparty")) {
-                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with " + your current rank.);
+                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with your current rank.");
                             return;
                         }
                         if (event.getName().equalsIgnoreCase("TNTTag") && !player.hasPermission("practice.events.tnttag")) {
-                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with " + your current rank.);
+                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with your current rank.");
                             return;
                         }
                         player.performCommand("host " + event.getName());
