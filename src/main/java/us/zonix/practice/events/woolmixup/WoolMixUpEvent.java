@@ -126,12 +126,8 @@ public class WoolMixUpEvent extends PracticeEvent<WoolMixUpPlayer>
     
     @Override
     public Consumer<Player> onDeath() {
-        final WoolMixUpPlayer data;
-        final Player winner;
-        final PlayerData winnerData;
-        final String announce;
         return player -> {
-            data = this.getPlayer(player);
+            final WoolMixUpPlayer data = this.getPlayer(player);
             if (data.getState() != WoolMixUpPlayer.WoolMixUpState.LOBBY) {
                 this.getPlayers().remove(player.getUniqueId());
                 this.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW + "Round " + this.round + ChatColor.GRAY + "] " + ChatColor.RED + player.getName() + " has been eliminated from the game.");
@@ -143,10 +139,10 @@ public class WoolMixUpEvent extends PracticeEvent<WoolMixUpPlayer>
                     return;
                 }, 20L);
                 if (this.getPlayers().size() == 1) {
-                    winner = this.players.values().stream().findFirst().get().getPlayer();
-                    winnerData = Practice.getInstance().getPlayerManager().getPlayerData(winner.getUniqueId());
+                    final Player winner = this.players.values().stream().findFirst().get().getPlayer();
+                    final PlayerData winnerData = Practice.getInstance().getPlayerManager().getPlayerData(winner.getUniqueId());
                     winnerData.setWaterDropEventWins(winnerData.getWaterDropEventWins() + 1);
-                    announce = ChatColor.DARK_RED + winner.getName() + ChatColor.WHITE + " has won our " + ChatColor.DARK_RED + "BlockParty" + ChatColor.WHITE + " event!";
+                    final String announce = ChatColor.DARK_RED + winner.getName() + ChatColor.WHITE + " has won our " + ChatColor.DARK_RED + "BlockParty" + ChatColor.WHITE + " event!";
                     Bukkit.broadcastMessage(announce);
                     this.isShuffling = false;
                     this.end();
@@ -184,10 +180,9 @@ public class WoolMixUpEvent extends PracticeEvent<WoolMixUpPlayer>
     }
     
     private void giveItems(final Player player) {
-        int i;
         this.getPlugin().getServer().getScheduler().runTask((Plugin)this.getPlugin(), () -> {
             if (this.currentColor >= 0 && this.isShuffling) {
-                for (i = 0; i <= 6; ++i) {
+                for (int i = 0; i <= 6; ++i) {
                     player.getInventory().setItem(i, ItemUtil.createItem(Material.WOOL, this.colors.get(this.currentColor), 1, (short)this.currentColor));
                 }
             }
@@ -243,26 +238,16 @@ public class WoolMixUpEvent extends PracticeEvent<WoolMixUpPlayer>
                 }
                 current = newCurrent;
                 data.add(current);
-                final int finalCurrent = current;
-                final EditSession editSession;
-                int i_;
-                int j_;
-                final int n;
-                final int n2;
-                final int n3;
-                Block b;
-                final int n4;
-                Block b_;
-                final int n5;
+                final int woolData = current;
                 TaskManager.IMP.async(() -> {
-                    editSession = new EditSessionBuilder(location.getWorld().getName()).fastmode(true).allowedRegionsEverywhere().autoQueue(false).limitUnlimited().build();
-                    for (i_ = 0; i_ < 4; ++i_) {
-                        for (j_ = 0; j_ < 4; ++j_) {
-                            b = location.getWorld().getBlockAt(new Location(location.getWorld(), (double)(n + i_), (double)n2, (double)(n3 + j_)));
-                            b_ = location.getWorld().getBlockAt(new Location(location.getWorld(), (double)(n + i_), (double)n4, (double)(n3 + j_)));
+                    final EditSession editSession = new EditSessionBuilder(location.getWorld().getName()).fastmode(true).allowedRegionsEverywhere().autoQueue(false).limitUnlimited().build();
+                    for (int i_ = 0; i_ < 4; ++i_) {
+                        for (int j_ = 0; j_ < 4; ++j_) {
+                            final Block b = location.getWorld().getBlockAt(new Location(location.getWorld(), x_ + i_, y, z_ + j_));
+                            final Block b2 = location.getWorld().getBlockAt(new Location(location.getWorld(), x_ + i_, y_, z_ + j_));
                             try {
-                                editSession.setBlock(new Vector((double)b.getLocation().getBlockX(), (double)b.getLocation().getBlockY(), b.getLocation().getZ()), new BaseBlock(35, n5));
-                                editSession.setBlock(new Vector((double)b_.getLocation().getBlockX(), (double)b_.getLocation().getBlockY(), b_.getLocation().getZ()), new BaseBlock(7, 0));
+                                editSession.setBlock(new Vector(b.getLocation().getBlockX(), b.getLocation().getBlockY(), b.getLocation().getZ()), new BaseBlock(35, woolData));
+                                editSession.setBlock(new Vector(b2.getLocation().getBlockX(), b2.getLocation().getBlockY(), b2.getLocation().getZ()), new BaseBlock(7, 0));
                             }
                             catch (MaxChangedBlocksException e) {
                                 e.printStackTrace();

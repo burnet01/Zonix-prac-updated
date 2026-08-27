@@ -91,11 +91,8 @@ public class LightsEvent extends PracticeEvent<LightsPlayer>
     
     @Override
     public Consumer<Player> onDeath() {
-        final LightsPlayer data;
-        final Player winner;
-        final String announce;
         return player -> {
-            data = this.getPlayer(player);
+            final LightsPlayer data = this.getPlayer(player);
             if (data.getState() != LightsPlayer.LightsState.LOBBY) {
                 this.players.remove(player.getUniqueId());
                 this.sendMessage("&7[&f" + this.getName() + "&7] &c" + player.getName() + ChatColor.WHITE + " has been eliminated from the game.");
@@ -107,9 +104,9 @@ public class LightsEvent extends PracticeEvent<LightsPlayer>
                     return;
                 });
                 if (this.getByState(LightsPlayer.LightsState.INGAME).size() == 1) {
-                    winner = Bukkit.getPlayer((UUID)this.getByState(LightsPlayer.LightsState.INGAME).stream().findFirst().get());
+                    final Player winner = Bukkit.getPlayer((UUID)this.getByState(LightsPlayer.LightsState.INGAME).stream().findFirst().get());
                     if (winner != null) {
-                        announce = ChatColor.DARK_RED + winner.getName() + ChatColor.WHITE + " has won our " + ChatColor.DARK_RED + "RedLightGreenLight" + ChatColor.WHITE + " event!";
+                        final String announce = ChatColor.DARK_RED + winner.getName() + ChatColor.WHITE + " has won our " + ChatColor.DARK_RED + "RedLightGreenLight" + ChatColor.WHITE + " event!";
                         Bukkit.broadcastMessage(announce);
                     }
                     this.end();
@@ -130,15 +127,9 @@ public class LightsEvent extends PracticeEvent<LightsPlayer>
     }
     
     private void giveItems(final Player player) {
-        int i;
-        Material wool;
-        String name;
-        final Object o;
-        final int n;
         this.getPlugin().getServer().getScheduler().runTask((Plugin)this.getPlugin(), () -> {
-            for (i = 0; i <= 8; ++i) {
-                player.getInventory();
-                wool = Material.WOOL;
+            for (int i = 0; i <= 8; ++i) {
+                String name;
                 if (this.current == LightsGameState.GREEN) {
                     name = ChatColor.GREEN.toString() + ChatColor.BOLD + "GO";
                 }
@@ -148,7 +139,7 @@ public class LightsEvent extends PracticeEvent<LightsPlayer>
                 else {
                     name = ChatColor.RED.toString() + ChatColor.BOLD + "STOP";
                 }
-                ((PlayerInventory)o).setItem(n, ItemUtil.createItem(wool, name, 1, (short)((this.current == LightsGameState.GREEN) ? 5 : ((this.current == LightsGameState.YELLOW) ? 4 : 14))));
+                player.getInventory().setItem(i, ItemUtil.createItem(Material.WOOL, name, 1, (short)((this.current == LightsGameState.GREEN) ? 5 : ((this.current == LightsGameState.YELLOW) ? 4 : 14))));
             }
             player.updateInventory();
         });

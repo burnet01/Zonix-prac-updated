@@ -27,6 +27,7 @@ import org.bukkit.Material;
 import us.zonix.practice.events.EventCountdownTask;
 import us.zonix.practice.CustomLocation;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.Map;
@@ -43,8 +44,8 @@ public class TNTTagEvent extends PracticeEvent<TNTTagPlayer>
     
     public TNTTagEvent() {
         super("TNTTag", new ItemBuilder(Material.TNT).name("&cTNT Tag event").build(), true);
-        this.players = (Map<UUID, TNTTagPlayer>)Maps.newHashMap();
-        this.spawnLocations = (List<CustomLocation>)Lists.newArrayList();
+        this.players = new HashMap<UUID, TNTTagPlayer>();
+        this.spawnLocations = new ArrayList<CustomLocation>();
         this.countdownTask = new EventCountdownTask(this);
         this.tntTagState = TNTTagState.NOT_STARTED;
         this.round = 0;
@@ -68,15 +69,11 @@ public class TNTTagEvent extends PracticeEvent<TNTTagPlayer>
     
     @Override
     public Consumer<Player> onDeath() {
-        final boolean wasTagged;
-        final List<TNTTagPlayer> tntTagPlayers;
-        final Player winner;
-        final String announce;
         return player -> {
             if (this.getState() == EventState.STARTED) {
-                wasTagged = this.getPlayer(player).isTagged();
+                final boolean wasTagged = this.getPlayer(player).isTagged();
                 this.players.remove(player.getUniqueId());
-                tntTagPlayers = this.getPlayers().values().stream().filter(EventPlayer::playerExists).filter(TNTTagPlayer::isTagged).collect(Collectors.toList());
+                final List<TNTTagPlayer> tntTagPlayers = this.getPlayers().values().stream().filter(EventPlayer::playerExists).filter(TNTTagPlayer::isTagged).collect(Collectors.toList());
                 if (wasTagged && tntTagPlayers.size() == 0) {
                     this.setTntTagState(TNTTagState.PREPARING);
                     this.task.time = 5;
@@ -91,8 +88,8 @@ public class TNTTagEvent extends PracticeEvent<TNTTagPlayer>
                     return;
                 }, 20L);
                 if (this.players.size() == 1) {
-                    winner = this.players.values().stream().findFirst().get().getPlayer();
-                    announce = ChatColor.DARK_RED + winner.getName() + ChatColor.WHITE + " has won our " + ChatColor.DARK_RED + "TNT Tag Event!";
+                    final Player winner = this.players.values().stream().findFirst().get().getPlayer();
+                    final String announce = ChatColor.DARK_RED + winner.getName() + ChatColor.WHITE + " has won our " + ChatColor.DARK_RED + "TNT Tag Event!";
                     Bukkit.broadcastMessage(announce);
                     Bukkit.broadcastMessage(announce);
                     this.end();
@@ -187,29 +184,21 @@ public class TNTTagEvent extends PracticeEvent<TNTTagPlayer>
                     this.event.sendMessage("&c" + tagged.size() + " &eplayers have been removed from the game.");
                     this.event.setTntTagState(TNTTagState.PREPARING);
                     this.time = 5;
-                    final Player bukkitPlayer;
-                    final Consumer<Player> consumer;
-                    final Player nearbyPlayer;
-                    final Consumer<Player> consumer2;
                     tagged.stream().filter(EventPlayer::playerExists).forEach(player -> {
-                        bukkitPlayer = player.getPlayer();
+                        final Player bukkitPlayer = player.getPlayer();
                         bukkitPlayer.getWorld().playEffect(bukkitPlayer.getLocation(), Effect.EXPLOSION_LARGE, 1, 1);
                         bukkitPlayer.getWorld().playSound(bukkitPlayer.getLocation(), Sound.EXPLODE, 1.0f, 1.0f);
-                        consumer.accept(bukkitPlayer);
-                        if (this.event.players.size() <= 1) {
-                            return;
-                        }
-                        else {
+                        deathConsumer.accept(bukkitPlayer);
+                        if (this.event.players.size() > 1) {
                             bukkitPlayer.getNearbyEntities(1.0, 1.0, 1.0).stream().filter(entity -> this.event.getPlayers().containsKey(entity.getUniqueId())).map(entity -> this.event.getPlayers().get(entity.getUniqueId())).forEach(nearby -> {
-                                nearbyPlayer = nearby.getPlayer();
+                                final Player nearbyPlayer = nearby.getPlayer();
                                 nearbyPlayer.getWorld().playEffect(nearbyPlayer.getLocation(), Effect.EXPLOSION_LARGE, 1, 1);
                                 nearbyPlayer.getWorld().playSound(nearbyPlayer.getLocation(), Sound.EXPLODE, 1.0f, 1.0f);
-                                consumer2.accept(nearbyPlayer);
+                                deathConsumer.accept(nearbyPlayer);
                                 if (this.event.players.size() > 1) {
                                     nearbyPlayer.sendMessage(ChatColor.RED + "You died because you were to close to another tagged player.");
                                 }
                             });
-                            return;
                         }
                     });
                 }
