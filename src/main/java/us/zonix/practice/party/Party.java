@@ -89,10 +89,7 @@ public class Party
     }
     
     public Stream<Player> members() {
-        final Stream<Object> stream = this.members.stream();
-        final Server server = this.plugin.getServer();
-        Objects.requireNonNull(server);
-        return stream.map((Function<? super Object, ?>)server::getPlayer).filter((Predicate<? super Player>)Objects::nonNull);
+        return this.members.stream().map(this.plugin.getServer()::getPlayer).filter(Objects::nonNull);
     }
     
     public int getMaxArchers() {

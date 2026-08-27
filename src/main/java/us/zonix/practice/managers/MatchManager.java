@@ -232,13 +232,12 @@ public class MatchManager
         final CraftPlayer playerCp = (CraftPlayer)player;
         final EntityPlayer playerEp = playerCp.getHandle();
         playerEp.getDataWatcher().watch(6, (Object)0.0f);
-        playerEp.setFakingDeath(true);
         match.addSpectator(player.getUniqueId());
         match.getTeams().forEach(team -> team.alivePlayers().forEach(member -> member.hidePlayer(player)));
         match.spectatorPlayers().forEach(member -> member.hidePlayer(player));
-        final Stream map = player.getActivePotionEffects().stream().map(PotionEffect::getType);
-        Objects.requireNonNull(player);
-        map.forEach(player::removePotionEffect);
+        for (final PotionEffect effect : player.getActivePotionEffects()) {
+            player.removePotionEffect(effect.getType());
+        }
         player.setWalkSpeed(0.2f);
         player.setAllowFlight(true);
         if (match.isRedrover()) {

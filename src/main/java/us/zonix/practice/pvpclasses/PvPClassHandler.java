@@ -95,16 +95,12 @@ public class PvPClassHandler extends BukkitRunnable implements Listener
                     continue;
                 }
                 if (player.hasPotionEffect(id.getValue().getPotionEffect().getType())) {
-                    final Map.Entry<K, PvPClass.SavedPotion> entry;
-                    final PotionEffect restore;
-                    final Player player2;
-                    player.getActivePotionEffects().forEach(potion -> {
-                        restore = entry.getValue().getPotionEffect();
-                        if (potion.getType() == restore.getType() && potion.getDuration() < restore.getDuration() && potion.getAmplifier() <= restore.getAmplifier()) {
-                            player2.removePotionEffect(restore.getType());
+                    final PotionEffect restore = id.getValue().getPotionEffect();
+                    for (final PotionEffect active : player.getActivePotionEffects()) {
+                        if (active.getType() == restore.getType() && active.getDuration() < restore.getDuration() && active.getAmplifier() <= restore.getAmplifier()) {
+                            player.removePotionEffect(restore.getType());
                         }
-                        return;
-                    });
+                    }
                 }
                 if (!player.addPotionEffect(id.getValue().getPotionEffect(), true)) {
                     continue;

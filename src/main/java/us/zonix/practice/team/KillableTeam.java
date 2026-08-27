@@ -36,17 +36,11 @@ public class KillableTeam
     }
     
     public Stream<Player> alivePlayers() {
-        final Stream<Object> stream = this.alivePlayers.stream();
-        final Server server = this.plugin.getServer();
-        Objects.requireNonNull(server);
-        return stream.map((Function<? super Object, ?>)server::getPlayer).filter((Predicate<? super Player>)Objects::nonNull);
+        return this.alivePlayers.stream().map(this.plugin.getServer()::getPlayer).filter(Objects::nonNull);
     }
-    
+
     public Stream<Player> players() {
-        final Stream<Object> stream = this.players.stream();
-        final Server server = this.plugin.getServer();
-        Objects.requireNonNull(server);
-        return stream.map((Function<? super Object, ?>)server::getPlayer).filter((Predicate<? super Player>)Objects::nonNull);
+        return this.players.stream().map(this.plugin.getServer()::getPlayer).filter(Objects::nonNull);
     }
     
     public int onlinePlayers() {

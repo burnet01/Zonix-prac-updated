@@ -118,12 +118,12 @@ public abstract class PvPClass implements Listener
             if (effect.getAmplifier() == active.getAmplifier() && 0 < active.getDuration() && (effect.getDuration() <= active.getDuration() || effect.getDuration() - active.getDuration() < 10)) {
                 return;
             }
-            PvPClass.restores.put((Object)player.getUniqueId(), (Object)active.getType(), (Object)active);
+            PvPClass.restores.put(player.getUniqueId(), active.getType(), active);
             shouldCancel = false;
         }
         player.addPotionEffect(effect, true);
         if (shouldCancel && effect.getDuration() > 120 && effect.getDuration() < 9600) {
-            PvPClass.restores.remove((Object)player.getUniqueId(), (Object)effect.getType());
+            PvPClass.restores.remove(player.getUniqueId(), effect.getType());
         }
     }
     

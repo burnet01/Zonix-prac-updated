@@ -64,8 +64,8 @@ public class Match
         this.plugin = Practice.getInstance();
         this.snapshots = new HashMap<UUID, InventorySnapshot>();
         this.entitiesToRemove = new HashSet<Entity>();
-        this.originalBlockChanges = (Set<BlockState>)Sets.newConcurrentHashSet();
-        this.placedBlockLocations = (Set<Location>)Sets.newConcurrentHashSet();
+        this.originalBlockChanges = Sets.<BlockState>newConcurrentHashSet();
+        this.placedBlockLocations = Sets.<Location>newConcurrentHashSet();
         this.spectators = (Set<UUID>)new ConcurrentSet();
         this.runnables = new HashSet<Integer>();
         this.haveSpectated = new HashSet<UUID>();
@@ -183,10 +183,7 @@ public class Match
     }
     
     public Stream<Player> spectatorPlayers() {
-        final Stream<Object> stream = this.spectators.stream();
-        final Server server = this.plugin.getServer();
-        Objects.requireNonNull(server);
-        return stream.map((Function<? super Object, ?>)server::getPlayer).filter((Predicate<? super Player>)Objects::nonNull);
+        return this.spectators.stream().map(this.plugin.getServer()::getPlayer).filter(Objects::nonNull);
     }
     
     public int decrementCountdown() {

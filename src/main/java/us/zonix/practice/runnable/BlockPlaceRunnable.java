@@ -30,7 +30,7 @@ public abstract class BlockPlaceRunnable extends BukkitRunnable
         this.blocksPlaced = 0;
         this.completed = false;
         this.world = world;
-        (this.blocks = new ConcurrentHashMap<Location, Block>()).putAll((Map<?, ?>)blocks);
+        (this.blocks = new ConcurrentHashMap<Location, Block>()).putAll(blocks);
         this.totalBlocks = blocks.keySet().size();
         this.iterator = blocks.keySet().iterator();
     }
@@ -42,26 +42,16 @@ public abstract class BlockPlaceRunnable extends BukkitRunnable
             this.cancel();
             return;
         }
-        final EditSession editSession;
-        final Iterator<Map.Entry<Object, Object>> iterator;
-        Map.Entry<Object, Object> entry;
-        final TaskManager imp;
-        final ConcurrentMap<Location, Block> blocks;
         TaskManager.IMP.async(() -> {
-            editSession = new EditSessionBuilder(this.world.getName()).fastmode(true).allowedRegionsEverywhere().autoQueue(false).limitUnlimited().build();
-            this.blocks.entrySet().iterator();
-            while (iterator.hasNext()) {
-                entry = iterator.next();
+            final EditSession editSession = new EditSessionBuilder(this.world.getName()).fastmode(true).allowedRegionsEverywhere().autoQueue(false).limitUnlimited().build();
+            for (final Map.Entry<Location, Block> entry : this.blocks.entrySet()) {
                 try {
-                    editSession.setBlock(new Vector((double)entry.getKey().getBlockX(), (double)entry.getKey().getBlockY(), entry.getKey().getZ()), new BaseBlock(entry.getValue().getTypeId(), (int)entry.getValue().getData()));
+                    editSession.setBlock(new Vector(entry.getKey().getBlockX(), entry.getKey().getBlockY(), entry.getKey().getBlockZ()), new BaseBlock(entry.getValue().getTypeId(), entry.getValue().getData()));
                 }
                 catch (Exception ex) {}
             }
             editSession.flushQueue();
-            imp = TaskManager.IMP;
-            blocks = this.blocks;
-            Objects.requireNonNull(blocks);
-            imp.task(blocks::clear);
+            this.blocks.clear();
         });
     }
     

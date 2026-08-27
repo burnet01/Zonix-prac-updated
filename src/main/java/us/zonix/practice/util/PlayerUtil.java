@@ -62,10 +62,9 @@ public final class PlayerUtil
         player.closeInventory();
         player.setGameMode(GameMode.SURVIVAL);
         ((CraftPlayer)player).getHandle().getDataWatcher().watch(9, (Object)(byte)0);
-        ((CraftPlayer)player).getHandle().setFakingDeath(false);
-        final Stream map = player.getActivePotionEffects().stream().map(PotionEffect::getType);
-        Objects.requireNonNull(player);
-        map.forEach(player::removePotionEffect);
+        for (final PotionEffect effect : player.getActivePotionEffects()) {
+            player.removePotionEffect(effect.getType());
+        }
         player.updateInventory();
     }
     

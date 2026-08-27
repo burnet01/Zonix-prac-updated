@@ -28,31 +28,25 @@ public class Arena
     }
     
     private void loadChunks() {
-        final Location locA;
-        final Location locB;
         this.standaloneArenas.forEach(standaloneArena -> {
-            locA = standaloneArena.getA().toBukkitLocation();
-            locB = standaloneArena.getB().toBukkitLocation();
+            final Location locA = standaloneArena.getA().toBukkitLocation();
+            final Location locB = standaloneArena.getB().toBukkitLocation();
             if (!locA.isChunkLoaded()) {
                 locA.getChunk().load();
             }
             if (!locB.isChunkLoaded()) {
                 locB.getChunk().load();
             }
-            return;
         });
-        final Location locA2;
-        final Location locB2;
         this.availableArenas.forEach(standaloneArena -> {
-            locA2 = standaloneArena.getA().toBukkitLocation();
-            locB2 = standaloneArena.getB().toBukkitLocation();
-            if (!locA2.isChunkLoaded()) {
-                locA2.getChunk().load();
+            final Location locA = standaloneArena.getA().toBukkitLocation();
+            final Location locB = standaloneArena.getB().toBukkitLocation();
+            if (!locA.isChunkLoaded()) {
+                locA.getChunk().load();
             }
-            if (!locB2.isChunkLoaded()) {
-                locB2.getChunk().load();
+            if (!locB.isChunkLoaded()) {
+                locB.getChunk().load();
             }
-            return;
         });
         final Location locA3 = this.a.toBukkitLocation();
         final Location locB3 = this.b.toBukkitLocation();
