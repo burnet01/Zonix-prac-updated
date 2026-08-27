@@ -632,6 +632,9 @@ public class PlayerListener implements Listener
     public void onPlayerDeath(final PlayerDeathEvent event) {
         final Player player = event.getEntity();
         final PlayerData playerData = this.plugin.getPlayerManager().getPlayerData(player.getUniqueId());
+        if (playerData == null) {
+            return;
+        }
         switch (playerData.getPlayerState()) {
             case FIGHTING: {
                 this.plugin.getMatchManager().removeFighter(player, playerData, true);

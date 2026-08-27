@@ -57,6 +57,10 @@ public class EntityListener implements Listener
         if (e.getEntity() instanceof Player) {
             final Player player = (Player)e.getEntity();
             final PlayerData playerData = this.plugin.getPlayerManager().getPlayerData(player.getUniqueId());
+            if (playerData == null) {
+                e.setCancelled(true);
+                return;
+            }
             switch (playerData.getPlayerState()) {
                 case FIGHTING: {
                     final Match match = this.plugin.getMatchManager().getMatch(playerData);
