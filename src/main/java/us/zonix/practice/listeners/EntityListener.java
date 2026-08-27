@@ -230,7 +230,7 @@ public class EntityListener implements Listener
             }
             return;
         }
-        if ((isEventDamager && eventDamager instanceof RedroverEvent && ((RedroverEvent)eventDamager).getPlayer(damager).getState() != RedroverPlayer.RedroverState.FIGHTING) || (isEventEntity && eventDamager instanceof RedroverEvent && ((RedroverEvent)eventEntity).getPlayer(entity).getState() != RedroverPlayer.RedroverState.FIGHTING) || (!isEventDamager && damagerData.getPlayerState() != PlayerState.FIGHTING) || (!isEventEntity && entityData.getPlayerState() != PlayerState.FIGHTING)) {
+        if ((isEventDamager && eventDamager instanceof RedroverEvent && ((RedroverEvent)eventDamager).getPlayer(damager).getState() != RedroverPlayer.RedroverState.FIGHTING) || (isEventEntity && eventDamager instanceof RedroverEvent && ((RedroverEvent)eventEntity).getPlayer(entity).getState() != RedroverPlayer.RedroverState.FIGHTING) || (!isEventDamager && damagerData.getPlayerState() != PlayerState.FIGHTING && damagerData.getPlayerState() != PlayerState.TRAINING) || (!isEventEntity && entityData.getPlayerState() != PlayerState.FIGHTING && entityData.getPlayerState() != PlayerState.TRAINING)) {
             e.setCancelled(true);
             return;
         }
