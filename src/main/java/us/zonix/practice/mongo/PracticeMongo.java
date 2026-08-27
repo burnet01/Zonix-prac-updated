@@ -24,7 +24,7 @@ public class PracticeMongo
         }
         PracticeMongo.instance = this;
         final FileConfiguration config = (FileConfiguration)Practice.getInstance().getMainConfig().getConfiguration();
-        final String connectionString = config.contains("mongo.connection-string") ? trimToNull(config.getString("mongo.connection-string")) : null;
+        final String connectionString = config.contains("mongo.uri") ? trimToNull(config.getString("mongo.uri")) : (config.contains("mongo.connection-string") ? trimToNull(config.getString("mongo.connection-string")) : null);
         String databaseName = config.getString("mongo.database", "practice");
         if (connectionString != null) {
             final MongoClientURI uri = new MongoClientURI(connectionString);

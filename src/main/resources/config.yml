@@ -1,11 +1,13 @@
 mongo:
-  # Set connection-string to use a MongoDB URI instead of host/port/auth below.
-  # Example: "mongodb://username:password@127.0.0.1:27017/practice?authSource=admin"
-  # Leave empty or set to "none" to use the host/port/authentication settings.
-  connection-string: ""
+  # MongoDB connection URI (takes priority over host/port/auth below).
+  # Example (local):    "mongodb://username:password@127.0.0.1:27017"
+  # Example (Atlas):    "mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/?appName=Cluster0"
+  # Leave empty or set to "none" to use host/port/authentication settings.
+  uri: ""
+  database: "practice"
+  # Fallback used when uri is empty:
   host: "127.0.0.1"
   port: 27017
-  database: "practice"
   authentication:
     enabled: false
     username: "admin"
