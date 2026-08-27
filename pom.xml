@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>us.zonix.practice</groupId>
+    <artifactId>Practice</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <!-- Decompiled sources are Windows-1252 encoded -->
+        <project.build.sourceEncoding>windows-1252</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+
+        <!-- Server (provides Bukkit/NMS v1_8_R3, Guava, bungeecord-chat, commons-lang) -->
+        <dependency>
+            <groupId>com.windpvp</groupId>
+            <artifactId>windspigot</artifactId>
+            <version>2.1.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/WindSpigot-2.1.4.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>net.citizensnpcs</groupId>
+            <artifactId>citizens</artifactId>
+            <version>2.0.25-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/citizens-2.0.25-SNAPSHOT.jar</systemPath>
+        </dependency>
+
+        <!-- gson shaded into the plugin -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.3.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sk89q</groupId>
+            <artifactId>worldedit</artifactId>
+            <version>6.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/worldedit-bukkit-6.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.boydti</groupId>
+            <artifactId>fawe-api</artifactId>
+            <version>21.03.09</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/FastAsyncWorldEdit-bukkit-21.03.09-a5e5590-1285-22.3.8.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.10</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- MongoDB driver shaded into the plugin -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver</artifactId>
+            <version>3.12.14</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>windows-1252</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
