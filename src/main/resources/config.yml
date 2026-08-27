@@ -1,4 +1,8 @@
 mongo:
+  # Set connection-string to use a MongoDB URI instead of host/port/auth below.
+  # Example: "mongodb://username:password@127.0.0.1:27017/practice?authSource=admin"
+  # Leave empty or set to "none" to use the host/port/authentication settings.
+  connection-string: ""
   host: "127.0.0.1"
   port: 27017
   database: "practice"
