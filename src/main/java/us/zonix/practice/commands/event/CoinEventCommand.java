@@ -10,7 +10,7 @@ import org.bukkit.ChatColor;
 import us.zonix.practice.events.EventState;
 import org.bukkit.entity.Player;
 import org.bukkit.command.CommandSender;
-import me.maiko.dexter.util.CC;
+import us.zonix.practice.util.CC;
 import us.zonix.practice.Practice;
 import org.bukkit.command.Command;
 

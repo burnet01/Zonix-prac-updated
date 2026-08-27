@@ -2,21 +2,19 @@ package us.zonix.practice.listeners;
 
 import us.zonix.practice.events.EventState;
 import us.zonix.practice.events.PracticeEvent;
-import me.maiko.dexter.util.event.PreShutdownEvent;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.PotionSplashEvent;
 import java.util.Map;
 import us.zonix.practice.party.Party;
-import net.edater.spigot.knockback.KnockbackProfile;
+import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
 import us.zonix.practice.util.EloUtil;
 import org.bukkit.Bukkit;
-import me.maiko.dexter.util.CC;
-import me.maiko.dexter.profile.Profile;
+import us.zonix.practice.util.CC;
 import java.util.LinkedHashMap;
 import us.zonix.practice.inventory.InventorySnapshot;
 import java.util.UUID;
 import us.zonix.practice.util.Clickable;
-import net.edater.spigot.EdaterSpigot;
+import com.windpvp.windspigot.knockback.KnockbackConfig;
 import us.zonix.practice.event.match.MatchEndEvent;
 import us.zonix.practice.match.MatchState;
 import us.zonix.practice.match.MatchTeam;
@@ -174,7 +172,7 @@ public class MatchListener implements Listener
     
     @EventHandler
     public void onMatchEnd(final MatchEndEvent event) {
-        final KnockbackProfile knockbackProfile = EdaterSpigot.INSTANCE.getKnockbackHandler().getActiveProfile();
+        final KnockbackProfile knockbackProfile = KnockbackConfig.getCurrentKb();
         final Match match = event.getMatch();
         final Clickable winnerClickable = new Clickable(ChatColor.GREEN + "Winner: ");
         final Clickable loserClickable = new Clickable(ChatColor.RED + "Loser: ");
@@ -229,7 +227,6 @@ public class MatchListener implements Listener
             final Map<UUID, InventorySnapshot> inventorySnapshotMap = new LinkedHashMap<UUID, InventorySnapshot>();
             final Match match3;
             final KnockbackProfile knockbackProfile3;
-            final Profile profile;
             final boolean onWinningTeam;
             final Map<UUID, InventorySnapshot> map;
             final Clickable clickable3;
@@ -239,28 +236,7 @@ public class MatchListener implements Listener
                     match3.addSnapshot(player);
                 }
                 player.setKnockbackProfile(knockbackProfile3);
-                profile = Profile.getByUuid(player.getUniqueId());
                 onWinningTeam = (this.plugin.getPlayerManager().getPlayerData(player.getUniqueId()).getTeamID() == event.getWinningTeam().getTeamID());
-                if (profile != null) {
-                    if (match3.getType().isRanked() && onWinningTeam) {
-                        profile.awardCoins(player, 35);
-                        player.sendMessage(CC.PRIMARY + "You have earned 35 coins for playing a rank match!");
-                    }
-                    else if (match3.getType().isRanked() && !onWinningTeam) {
-                        profile.awardCoins(player, 10);
-                        player.sendMessage(CC.PRIMARY + "You have earned 10 coins for competing in a ranked match!");
-                    }
-                }
-                if (profile != null) {
-                    if (!match3.getType().isRanked() && onWinningTeam) {
-                        profile.awardCoins(player, 10);
-                        player.sendMessage(CC.PRIMARY + "You have earned 10 coins for playing a unranked match!");
-                    }
-                    else if (!match3.getType().isRanked() && !onWinningTeam) {
-                        profile.awardCoins(player, 5);
-                        player.sendMessage(CC.PRIMARY + "You have earned 5 coins for competing in a unranked match!");
-                    }
-                }
                 map.put(player.getUniqueId(), match3.getSnapshot(player.getUniqueId()));
                 if (onWinningTeam) {
                     clickable3.add(ChatColor.GRAY + player.getName() + " ", ChatColor.GRAY + "Click to view inventory", "/inventory " + match3.getSnapshot(player.getUniqueId()).getSnapshotId());
@@ -343,22 +319,6 @@ public class MatchListener implements Listener
             if (shooter.isSprinting() && event.getIntensity((LivingEntity)shooter) > 0.5) {
                 event.setIntensity((LivingEntity)shooter, 1.0);
             }
-        }
-    }
-    
-    @EventHandler
-    public void onPreStopEvent(final PreShutdownEvent event) {
-        for (final Match match : Practice.getInstance().getMatchManager().getMatches().values()) {
-            match.setMatchState(MatchState.ENDING);
-            match.setCountdown(3);
-        }
-        for (final PracticeEvent practiceEvent : Practice.getInstance().getEventManager().getEvents().values()) {
-            if (practiceEvent.getState() == EventState.STARTED) {
-                practiceEvent.end();
-            }
-        }
-        for (final Integer tournamentId : Practice.getInstance().getTournamentManager().getTournaments().keySet()) {
-            Practice.getInstance().getTournamentManager().removeTournament(tournamentId, true);
         }
     }
 }

@@ -9,8 +9,7 @@ import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Collections;
 import org.bukkit.Bukkit;
-import me.maiko.dexter.util.CC;
-import me.maiko.dexter.profile.Profile;
+import us.zonix.practice.util.CC;
 import org.bukkit.ChatColor;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -70,10 +69,8 @@ public class TNTTagEvent extends PracticeEvent<TNTTagPlayer>
     public Consumer<Player> onDeath() {
         final boolean wasTagged;
         final List<TNTTagPlayer> tntTagPlayers;
-        final Profile profile;
         final Player winner;
         final String announce;
-        final Profile winnerProfile;
         return player -> {
             if (this.getState() == EventState.STARTED) {
                 wasTagged = this.getPlayer(player).isTagged();
@@ -85,9 +82,6 @@ public class TNTTagEvent extends PracticeEvent<TNTTagPlayer>
                 }
                 this.sendMessage("&c" + player.getName() + " &ehas exploded!");
                 player.sendMessage(ChatColor.RED + "You have exploded!");
-                profile = Profile.getByUuid(player.getUniqueId());
-                profile.awardCoins(player, 5);
-                player.sendMessage(CC.GOLD + "You earn 5 coins for participating in the event.");
                 this.getPlugin().getServer().getScheduler().runTaskLater((Plugin)this.getPlugin(), () -> {
                     this.getPlugin().getPlayerManager().sendToSpawnAndReset(player);
                     if (this.getPlayers().size() >= 2) {
@@ -99,9 +93,6 @@ public class TNTTagEvent extends PracticeEvent<TNTTagPlayer>
                     winner = this.players.values().stream().findFirst().get().getPlayer();
                     announce = ChatColor.DARK_RED + winner.getName() + ChatColor.WHITE + " has won our " + ChatColor.DARK_RED + "TNT Tag Event!";
                     Bukkit.broadcastMessage(announce);
-                    winnerProfile = Profile.getByUuid(winner.getUniqueId());
-                    winnerProfile.awardCoins(winner, 15);
-                    winner.sendMessage(CC.GOLD + "You earn 15 coins for winning the event!");
                     Bukkit.broadcastMessage(announce);
                     this.end();
                 }

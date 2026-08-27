@@ -3,8 +3,7 @@ package us.zonix.practice.events.parkour;
 import us.zonix.practice.player.PlayerData;
 import java.util.Arrays;
 import org.bukkit.Bukkit;
-import me.maiko.dexter.util.CC;
-import me.maiko.dexter.profile.Profile;
+import us.zonix.practice.util.CC;
 import us.zonix.practice.Practice;
 import org.bukkit.scheduler.BukkitRunnable;
 import java.util.stream.Collector;
@@ -138,15 +137,15 @@ public class ParkourEvent extends PracticeEvent<ParkourPlayer>
     public List<String> getScoreboardLines(final Player player) {
         final List<String> strings = new ArrayList<String>();
         final int playingParkour = this.getByState(ParkourPlayer.ParkourState.WAITING).size() + this.getByState(ParkourPlayer.ParkourState.INGAME).size();
-        strings.add(" &c* &fPlayers§7: " + playingParkour + "/" + this.getLimit());
+        strings.add(" &c* &fPlayersï¿½7: " + playingParkour + "/" + this.getLimit());
         final int countdown = this.countdownTask.getTimeUntilStart();
         if (countdown > 0 && countdown <= 60) {
-            strings.add(" &c* &fStarting§7: " + countdown + "s");
+            strings.add(" &c* &fStartingï¿½7: " + countdown + "s");
         }
         if (this.getPlayer(player) != null) {
             final ParkourPlayer parkourPlayer = this.getPlayer(player);
             if (parkourPlayer.getLastCheckpoint() != null && parkourPlayer.getCheckpointId() > 0) {
-                strings.add(" &c* &fCheckpoint§7: §aSaved");
+                strings.add(" &c* &fCheckpointï¿½7: ï¿½aSaved");
             }
         }
         return strings;
@@ -187,9 +186,6 @@ public class ParkourEvent extends PracticeEvent<ParkourPlayer>
                 if (winner != null) {
                     final PlayerData winnerData = Practice.getInstance().getPlayerManager().getPlayerData(winner.getUniqueId());
                     winnerData.setParkourEventWins(winnerData.getParkourEventWins() + 1);
-                    final Profile winnerProfile = Profile.getByUuid(winner.getUniqueId());
-                    winnerProfile.awardCoins(winner, 15);
-                    winner.sendMessage(CC.GOLD + "You earn 15 coins for winning the event!");
                     for (int i = 0; i <= 2; ++i) {
                         final String announce = ChatColor.RED + winner.getName() + ChatColor.WHITE + " has won the event!";
                         Bukkit.broadcastMessage(announce);
@@ -206,9 +202,6 @@ public class ParkourEvent extends PracticeEvent<ParkourPlayer>
                 if (winner != null) {
                     final PlayerData winnerData = Practice.getInstance().getPlayerManager().getPlayerData(winner.getUniqueId());
                     winnerData.setParkourEventWins(winnerData.getParkourEventWins() + 1);
-                    final Profile winnerProfile = Profile.getByUuid(winner.getUniqueId());
-                    winnerProfile.awardCoins(winner, 15);
-                    winner.sendMessage(CC.GOLD + "You earn 15 coins for winning the event!");
                     for (int i = 0; i <= 2; ++i) {
                         final String announce = ChatColor.RED + winner.getName() + ChatColor.WHITE + " has won the event!";
                         Bukkit.broadcastMessage(announce);

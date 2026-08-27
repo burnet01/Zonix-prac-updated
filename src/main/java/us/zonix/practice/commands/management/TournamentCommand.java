@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 import java.util.Objects;
 import org.bukkit.Bukkit;
 import us.zonix.practice.util.Clickable;
-import me.maiko.dexter.util.CC;
+import us.zonix.practice.util.CC;
 import org.bukkit.entity.Player;
 import org.bukkit.command.CommandSender;
 import org.bukkit.Material;

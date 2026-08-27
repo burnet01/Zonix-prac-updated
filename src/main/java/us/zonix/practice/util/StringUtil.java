@@ -52,6 +52,17 @@ public final class StringUtil
     public static String getAOrAn(final String input) {
         return StringUtil.VOWELS.contains(input.substring(0, 1).toLowerCase()) ? "an" : "a";
     }
+
+    public static String center(String string) {
+        string = ChatColor.translateAlternateColorCodes('&', string);
+        int spaceCount = (53 - string.replaceAll("\u00a7.", "").length()) / 2;
+        spaceCount = Math.max(spaceCount, 0);
+        return string;
+    }
+
+    public static String getBorderLine(final String color) {
+        return color + ChatColor.STRIKETHROUGH + "-------------------------------------------";
+    }
     
     static {
         NO_PERMISSION = ChatColor.RED + "You don't enough permissions.";

@@ -4,8 +4,8 @@ import java.util.Optional;
 import org.bukkit.inventory.ItemStack;
 import java.util.Iterator;
 import us.zonix.practice.arena.Arena;
-import net.edater.spigot.knockback.KnockbackProfile;
-import net.edater.spigot.EdaterSpigot;
+import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
+import com.windpvp.windspigot.knockback.KnockbackConfig;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.GameMode;
 import us.zonix.practice.util.ItemUtil;
@@ -297,7 +297,7 @@ public class KitCommand extends Command
                     sender.sendMessage(KitCommand.NO_KIT);
                     return true;
                 }
-                final Optional<KnockbackProfile> knockbackProfile = (Optional<KnockbackProfile>)EdaterSpigot.INSTANCE.getKnockbackHandler().getProfileByName(args[2]);
+                final Optional<KnockbackProfile> knockbackProfile = Optional.ofNullable(KnockbackConfig.getKbProfileByName(args[2]));
                 if (!knockbackProfile.isPresent()) {
                     sender.sendMessage(ChatColor.RED + "Knockback Profile not found.");
                     return true;

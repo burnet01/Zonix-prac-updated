@@ -2,14 +2,12 @@ package us.zonix.practice.commands.event;
 
 import java.util.Collection;
 import us.zonix.practice.events.PracticeEvent;
-import me.maiko.dexter.rank.Rank;
 import org.apache.commons.lang.math.NumberUtils;
 import java.util.function.Consumer;
 import java.util.Objects;
 import us.zonix.practice.util.Clickable;
 import us.zonix.practice.events.EventState;
-import me.maiko.dexter.util.CC;
-import me.maiko.dexter.profile.Profile;
+import us.zonix.practice.util.CC;
 import org.bukkit.entity.Player;
 import org.bukkit.command.CommandSender;
 import org.bukkit.ChatColor;
@@ -40,26 +38,24 @@ public class HostCommand extends Command
         if (eventName == null) {
             return true;
         }
-        final Profile profile = Profile.getByUuid(player.getUniqueId());
-        final Rank rank = profile.getRank();
         if (eventName.equalsIgnoreCase("Parkour") && !sender.hasPermission("practice.events.parkour")) {
-            player.sendMessage(CC.RED + "You cannot host the Parkour Event with " + rank.getGameColor() + rank.getId() + CC.RED + " rank.");
+            player.sendMessage(CC.RED + "You cannot host the Parkour Event with your current rank.");
             return false;
         }
         if (eventName.equalsIgnoreCase("Sumo") && !sender.hasPermission("practice.events.sumo")) {
-            player.sendMessage(CC.RED + "You cannot host the Sumo Event with " + rank.getGameColor() + rank.getId() + CC.RED + " rank.");
+            player.sendMessage(CC.RED + "You cannot host the Sumo Event with your current rank.");
             return false;
         }
         if (eventName.equalsIgnoreCase("RedLightGreenLight") && !sender.hasPermission("practice.events.redlightgreenlight")) {
-            player.sendMessage(CC.RED + "You cannot host the Red Light Green Light Event with " + rank.getGameColor() + rank.getId() + CC.RED + " rank.");
+            player.sendMessage(CC.RED + "You cannot host the Red Light Green Light Event with your current rank.");
             return false;
         }
         if (eventName.equalsIgnoreCase("BlockParty") && !sender.hasPermission("practice.events.blockparty")) {
-            player.sendMessage(CC.RED + "You cannot host the Block Party Event with " + rank.getGameColor() + rank.getId() + CC.RED + " rank.");
+            player.sendMessage(CC.RED + "You cannot host the Block Party Event with your current rank.");
             return false;
         }
         if (eventName.equalsIgnoreCase("TNTTag") && !sender.hasPermission("practice.events.tnttag")) {
-            player.sendMessage(CC.RED + "You cannot host the TnT Tag Event with " + rank.getGameColor() + rank.getId() + CC.RED + " rank.");
+            player.sendMessage(CC.RED + "You cannot host the TnT Tag Event with your current rank.");
             return false;
         }
         if (this.plugin.getEventManager().getByName(eventName) == null) {

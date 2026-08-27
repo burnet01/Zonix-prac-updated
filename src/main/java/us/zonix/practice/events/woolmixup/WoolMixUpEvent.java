@@ -21,8 +21,7 @@ import java.util.Iterator;
 import us.zonix.practice.player.PlayerData;
 import org.bukkit.Bukkit;
 import us.zonix.practice.Practice;
-import me.maiko.dexter.util.CC;
-import me.maiko.dexter.profile.Profile;
+import us.zonix.practice.util.CC;
 import org.bukkit.entity.Player;
 import java.util.function.Consumer;
 import java.util.ArrayList;
@@ -128,18 +127,13 @@ public class WoolMixUpEvent extends PracticeEvent<WoolMixUpPlayer>
     @Override
     public Consumer<Player> onDeath() {
         final WoolMixUpPlayer data;
-        final Profile profile;
         final Player winner;
         final PlayerData winnerData;
         final String announce;
-        final Profile winnerProfile;
         return player -> {
             data = this.getPlayer(player);
             if (data.getState() != WoolMixUpPlayer.WoolMixUpState.LOBBY) {
                 this.getPlayers().remove(player.getUniqueId());
-                profile = Profile.getByUuid(player.getUniqueId());
-                profile.awardCoins(player, 5);
-                player.sendMessage(CC.GOLD + "You earn 5 coins for participating in the event.");
                 this.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW + "Round " + this.round + ChatColor.GRAY + "] " + ChatColor.RED + player.getName() + " has been eliminated from the game.");
                 this.getPlugin().getServer().getScheduler().runTaskLater((Plugin)this.getPlugin(), () -> {
                     this.getPlugin().getPlayerManager().sendToSpawnAndReset(player);
@@ -153,9 +147,6 @@ public class WoolMixUpEvent extends PracticeEvent<WoolMixUpPlayer>
                     winnerData = Practice.getInstance().getPlayerManager().getPlayerData(winner.getUniqueId());
                     winnerData.setWaterDropEventWins(winnerData.getWaterDropEventWins() + 1);
                     announce = ChatColor.DARK_RED + winner.getName() + ChatColor.WHITE + " has won our " + ChatColor.DARK_RED + "BlockParty" + ChatColor.WHITE + " event!";
-                    winnerProfile = Profile.getByUuid(winner.getUniqueId());
-                    winnerProfile.awardCoins(winner, 15);
-                    winner.sendMessage(CC.GOLD + "You earn 15 coins for winning the event!");
                     Bukkit.broadcastMessage(announce);
                     this.isShuffling = false;
                     this.end();
@@ -308,18 +299,18 @@ public class WoolMixUpEvent extends PracticeEvent<WoolMixUpPlayer>
     public List<String> getScoreboardLines(final Player player) {
         final List<String> strings = (List<String>)Lists.newArrayList();
         final int playing = this.getPlayers().size();
-        strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Players§7: " + playing + "/" + this.getLimit());
+        strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Playersï¿½7: " + playing + "/" + this.getLimit());
         final int countdown = this.getCountdownTask().getTimeUntilStart();
         if (countdown > 0 && countdown <= 60) {
-            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Starting§7: " + countdown + "s");
+            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Startingï¿½7: " + countdown + "s");
         }
         if (this.getPlayer(player) != null && this.getPlayer(player).getState() == WoolMixUpPlayer.WoolMixUpState.INGAME) {
             final String color = this.getCurrentColor();
             final String timeLeft = this.getTimeLeft();
-            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Round§7: " + this.getRound());
-            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Color§7: " + color);
+            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Roundï¿½7: " + this.getRound());
+            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Colorï¿½7: " + color);
             if (!timeLeft.contains("-")) {
-                strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Time Left§7: " + timeLeft);
+                strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Time Leftï¿½7: " + timeLeft);
             }
         }
         return strings;
@@ -442,9 +433,6 @@ public class WoolMixUpEvent extends PracticeEvent<WoolMixUpPlayer>
                     final PlayerData winnerData = Practice.getInstance().getPlayerManager().getPlayerData(winner.getUniqueId());
                     winnerData.setWaterDropEventWins(winnerData.getWaterDropEventWins() + 1);
                     final String announce = ChatColor.DARK_RED + winner.getName() + ChatColor.WHITE + " has won our " + ChatColor.DARK_RED + "BlockParty" + ChatColor.WHITE + " event!";
-                    final Profile winnerProfile = Profile.getByUuid(winner.getUniqueId());
-                    winnerProfile.awardCoins(winner, 15);
-                    winner.sendMessage(CC.GOLD + "You earn 15 coins for winning the event!");
                     Bukkit.broadcastMessage(announce);
                 }
                 WoolMixUpEvent.this.isShuffling = false;

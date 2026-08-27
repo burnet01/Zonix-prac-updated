@@ -13,8 +13,7 @@ import java.util.function.Function;
 import us.zonix.practice.events.EventPlayer;
 import java.util.Iterator;
 import org.bukkit.Bukkit;
-import me.maiko.dexter.util.CC;
-import me.maiko.dexter.profile.Profile;
+import us.zonix.practice.util.CC;
 import org.bukkit.entity.Player;
 import java.util.function.Consumer;
 import org.bukkit.plugin.Plugin;
@@ -93,18 +92,13 @@ public class LightsEvent extends PracticeEvent<LightsPlayer>
     @Override
     public Consumer<Player> onDeath() {
         final LightsPlayer data;
-        final Profile profile;
         final Player winner;
         final String announce;
-        final Profile winnerProfile;
         return player -> {
             data = this.getPlayer(player);
             if (data.getState() != LightsPlayer.LightsState.LOBBY) {
                 this.players.remove(player.getUniqueId());
                 this.sendMessage("&7[&f" + this.getName() + "&7] &c" + player.getName() + ChatColor.WHITE + " has been eliminated from the game.");
-                profile = Profile.getByUuid(player.getUniqueId());
-                profile.awardCoins(player, 5);
-                player.sendMessage(CC.GOLD + "You earn 5 coins for participating in the event.");
                 this.getPlugin().getServer().getScheduler().runTask((Plugin)this.getPlugin(), () -> {
                     this.getPlugin().getPlayerManager().sendToSpawnAndReset(player);
                     if (this.getPlayers().size() >= 2) {
@@ -116,9 +110,6 @@ public class LightsEvent extends PracticeEvent<LightsPlayer>
                     winner = Bukkit.getPlayer((UUID)this.getByState(LightsPlayer.LightsState.INGAME).stream().findFirst().get());
                     if (winner != null) {
                         announce = ChatColor.DARK_RED + winner.getName() + ChatColor.WHITE + " has won our " + ChatColor.DARK_RED + "RedLightGreenLight" + ChatColor.WHITE + " event!";
-                        winnerProfile = Profile.getByUuid(winner.getUniqueId());
-                        winnerProfile.awardCoins(winner, 15);
-                        winner.sendMessage(CC.GOLD + "You earn 15 coins for winning the event!");
                         Bukkit.broadcastMessage(announce);
                     }
                     this.end();
@@ -203,27 +194,27 @@ public class LightsEvent extends PracticeEvent<LightsPlayer>
     public List<String> getScoreboardLines(final Player player) {
         final List<String> strings = new ArrayList<String>();
         final int playing = this.getPlayers().size();
-        strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Players§7: " + playing + "/" + this.getLimit());
+        strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Playersï¿½7: " + playing + "/" + this.getLimit());
         final int countdown = this.getCountdownTask().getTimeUntilStart();
         if (countdown > 0 && countdown <= 60) {
-            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Starting§7: " + countdown + "s");
+            strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.WHITE + "Startingï¿½7: " + countdown + "s");
         }
         if (this.getPlayer(player) != null && this.getPlayer(player).getState() == LightsPlayer.LightsState.INGAME) {
             strings.add(" ");
             if (this.getCurrent() == LightsGameState.RED) {
-                strings.add("      §4\u2b24  §4§lSTOP");
-                strings.add("      §7\u2b24");
-                strings.add("      §7\u2b24");
+                strings.add("      ï¿½4\u2b24  ï¿½4ï¿½lSTOP");
+                strings.add("      ï¿½7\u2b24");
+                strings.add("      ï¿½7\u2b24");
             }
             else if (this.getCurrent() == LightsGameState.YELLOW) {
-                strings.add("      §7\u2b24");
-                strings.add("      §e\u2b24  §6§lSLOW");
-                strings.add("      §7\u2b24");
+                strings.add("      ï¿½7\u2b24");
+                strings.add("      ï¿½e\u2b24  ï¿½6ï¿½lSLOW");
+                strings.add("      ï¿½7\u2b24");
             }
             else if (this.getCurrent() == LightsGameState.GREEN) {
-                strings.add("      §7\u2b24");
-                strings.add("      §7\u2b24");
-                strings.add("      §a\u2b24  §a§lGO");
+                strings.add("      ï¿½7\u2b24");
+                strings.add("      ï¿½7\u2b24");
+                strings.add("      ï¿½a\u2b24  ï¿½aï¿½lGO");
             }
             strings.add(" ");
         }
@@ -249,9 +240,6 @@ public class LightsEvent extends PracticeEvent<LightsPlayer>
                     final PlayerData winnerData = Practice.getInstance().getPlayerManager().getPlayerData(winner.getUniqueId());
                     winnerData.setWaterDropEventWins(winnerData.getWaterDropEventWins() + 1);
                     Bukkit.broadcastMessage(ChatColor.DARK_RED + winner.getName() + ChatColor.WHITE + " has won a " + ChatColor.DARK_RED + LightsEvent.this.getName() + ChatColor.WHITE + " event!");
-                    final Profile winnerProfile = Profile.getByUuid(winner.getUniqueId());
-                    winnerProfile.awardCoins(winner, 15);
-                    winner.sendMessage(CC.GOLD + "You earn 15 coins for winning the event!");
                 }
                 LightsEvent.this.end();
                 this.cancel();

@@ -29,19 +29,25 @@ import java.util.UUID;
 import us.zonix.practice.match.Match;
 import java.util.HashMap;
 import us.zonix.practice.Practice;
-import net.edater.spigot.handler.MovementHandler;
+import com.windpvp.windspigot.protocol.MovementListener;
 
-public class CustomMovementHandler implements MovementHandler
+public class CustomMovementHandler implements MovementListener
 {
     private final Practice plugin;
     private static HashMap<Match, HashMap<UUID, CustomLocation>> parkourCheckpoints;
     private static HashMap<Match, HashMap<UUID, Integer>> bridgesScore;
-    
+
     public CustomMovementHandler() {
         this.plugin = Practice.getInstance();
     }
-    
-    public void handleUpdateLocation(final Player player, final Location to, final Location from, final PacketPlayInFlying packetPlayInFlying) {
+
+    @Override
+    public boolean updateLocation(final Player player, final Location to, final Location from, final PacketPlayInFlying packetPlayInFlying) {
+        this.handleUpdateLocation(player, to, from, packetPlayInFlying);
+        return false;
+    }
+
+    private void handleUpdateLocation(final Player player, final Location to, final Location from, final PacketPlayInFlying packetPlayInFlying) {
         final PlayerData playerData = this.plugin.getPlayerManager().getPlayerData(player.getUniqueId());
         if (playerData == null) {
             this.plugin.getLogger().warning(player.getName() + "'s player data is null");
@@ -181,7 +187,9 @@ public class CustomMovementHandler implements MovementHandler
         }
     }
     
-    public void handleUpdateRotation(final Player player, final Location location, final Location location1, final PacketPlayInFlying packetPlayInFlying) {
+    @Override
+    public boolean updateRotation(final Player player, final Location location, final Location location1, final PacketPlayInFlying packetPlayInFlying) {
+        return false;
     }
     
     private void teleportToSpawnOrCheckpoint(final Match match, final Player player) {

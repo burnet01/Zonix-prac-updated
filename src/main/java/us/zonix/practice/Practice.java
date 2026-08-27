@@ -45,7 +45,7 @@ import us.zonix.practice.commands.event.JoinEventCommand;
 import us.zonix.practice.commands.management.ResetStatsCommand;
 import us.zonix.practice.commands.toggle.SettingsCommand;
 import org.bukkit.command.Command;
-import net.edater.spigot.handler.PacketHandler;
+import com.windpvp.windspigot.WindSpigot;
 import us.zonix.practice.util.StatusCache;
 import us.zonix.practice.runnable.ItemDespawnRunnable;
 import us.zonix.practice.runnable.ExpBarRunnable;
@@ -53,9 +53,7 @@ import us.zonix.practice.runnable.SaveDataRunnable;
 import us.zonix.practice.board.BoardAdapter;
 import us.zonix.practice.board.adapter.PracticeBoard;
 import org.bukkit.Material;
-import net.edater.spigot.handler.MovementHandler;
 import us.zonix.practice.handler.CustomMovementHandler;
-import net.edater.spigot.EdaterSpigot;
 import java.util.Iterator;
 import us.zonix.practice.mongo.PracticeMongo;
 import org.bukkit.entity.Entity;
@@ -130,7 +128,7 @@ public class Practice extends JavaPlugin
     public void onEnable() {
         Practice.instance = this;
         this.mainConfig = new ConfigFile(this, "config");
-        EdaterSpigot.INSTANCE.addMovementHandler((MovementHandler)new CustomMovementHandler());
+        WindSpigot.getInstance().registerMovementListener(new CustomMovementHandler());
         this.registerCommands();
         this.registerListeners();
         this.registerManagers();
@@ -144,7 +142,7 @@ public class Practice extends JavaPlugin
         this.getServer().getScheduler().runTaskTimerAsynchronously((Plugin)this, (BukkitRunnable)new StatusCache(), 20L, 20L);
         this.regionLock = this.mainConfig.getBoolean("region-lock");
         this.allowedRegions = (List<String>)this.mainConfig.getConfiguration().getStringList("allowed-continents");
-        EdaterSpigot.INSTANCE.addPacketHandler((PacketHandler)(this.cpsHandler = new CPSHandler(this)));
+        WindSpigot.getInstance().registerPacketListener(this.cpsHandler = new CPSHandler(this));
     }
     
     private void registerCommands() {

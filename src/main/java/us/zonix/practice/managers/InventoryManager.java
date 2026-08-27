@@ -17,8 +17,6 @@ import java.util.Iterator;
 import java.util.Collection;
 import us.zonix.practice.bots.ZonixBot;
 import us.zonix.practice.arena.Arena;
-import me.maiko.dexter.rank.Rank;
-import me.maiko.dexter.profile.Profile;
 import us.zonix.practice.events.PracticeEvent;
 import us.zonix.practice.player.PlayerState;
 import us.zonix.practice.party.Party;
@@ -32,7 +30,7 @@ import us.zonix.practice.util.ItemUtil;
 import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 import java.util.HashMap;
-import me.maiko.dexter.util.CC;
+import us.zonix.practice.util.CC;
 import org.bukkit.ChatColor;
 import us.zonix.practice.inventory.InventorySnapshot;
 import java.util.UUID;
@@ -261,26 +259,24 @@ public class InventoryManager
                     @Override
                     public void onClick(final InventoryClickEvent e) {
                         final Player player = (Player)e.getWhoClicked();
-                        final Profile profile = Profile.getByUuid(player.getUniqueId());
-                        final Rank rank = profile.getRank();
                         if (event.getName().equalsIgnoreCase("Parkour") && !player.hasPermission("practice.events.parkour")) {
-                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with " + rank.getGameColor() + rank.getId() + CC.RED + " rank.");
+                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with " + your current rank.);
                             return;
                         }
                         if (event.getName().equalsIgnoreCase("Sumo") && !player.hasPermission("practice.events.sumo")) {
-                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with " + rank.getGameColor() + rank.getId() + CC.RED + " rank.");
+                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with " + your current rank.);
                             return;
                         }
                         if (event.getName().equalsIgnoreCase("RedLightGreenLight") && !player.hasPermission("practice.events.redlightgreenlight")) {
-                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with " + rank.getGameColor() + rank.getId() + CC.RED + " the rank.");
+                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with " + your current rank.);
                             return;
                         }
                         if (event.getName().equalsIgnoreCase("BlockParty") && !player.hasPermission("practice.events.blockparty")) {
-                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with " + rank.getGameColor() + rank.getId() + CC.RED + " rank.");
+                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with " + your current rank.);
                             return;
                         }
                         if (event.getName().equalsIgnoreCase("TNTTag") && !player.hasPermission("practice.events.tnttag")) {
-                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with " + rank.getGameColor() + rank.getId() + CC.RED + " rank.");
+                            player.sendMessage(CC.RED + "You cannot host the Parkour Event with " + your current rank.);
                             return;
                         }
                         player.performCommand("host " + event.getName());
@@ -407,21 +403,6 @@ public class InventoryManager
     }
     
     private void addToQueue(final Player player, final PlayerData playerData, final Kit kit, final Party party, final QueueType queueType, final boolean bestOfThree) {
-        if (Practice.getInstance().isRegionLock() && (queueType.equals(QueueType.PREMIUM) || queueType.equals(QueueType.RANKED))) {
-            final Profile profile = Profile.getByUuid(player.getUniqueId());
-            if (profile != null && profile.hasVpnData()) {
-                final Stream<Object> stream = Practice.getInstance().getAllowedRegions().stream();
-                final String continentCode = profile.getVpnData().getContinentCode();
-                Objects.requireNonNull(continentCode);
-                if (stream.noneMatch((Predicate<? super Object>)continentCode::equalsIgnoreCase)) {
-                    player.sendMessage(ChatColor.RED + "Your region does not allow you to join premium/ranked queues on this practice sub-server. Make sure you are on the right proxy and sub-server.");
-                    return;
-                }
-            }
-            else {
-                Bukkit.getOnlinePlayers().parallelStream().filter(online -> online.hasPermission("core.superadmin")).forEach(online -> online.sendMessage(ChatColor.RED + "[!] Couldn't find " + player.getName() + "'s region! Make sure the AntiVPN is working correctly, if not please use /regionlock toggle off to disable region-lock."));
-            }
-        }
         if (kit != null) {
             if (party == null) {
                 this.plugin.getQueueManager().addPlayerToQueue(player, playerData, kit.getName(), queueType, bestOfThree);

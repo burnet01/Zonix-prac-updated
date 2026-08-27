@@ -4,8 +4,8 @@ import java.util.Collection;
 import org.bukkit.configuration.file.FileConfiguration;
 import java.util.Optional;
 import org.bukkit.configuration.ConfigurationSection;
-import net.edater.spigot.knockback.KnockbackProfile;
-import net.edater.spigot.EdaterSpigot;
+import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
+import com.windpvp.windspigot.knockback.KnockbackConfig;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
@@ -75,8 +75,8 @@ public class KitManager
             bestOfThree = configurationSection.getBoolean(name + ".bestOfThree");
             premium = configurationSection.getBoolean(name + ".premium");
             priority = configurationSection.getInt(name + ".priority");
-            knockback = EdaterSpigot.INSTANCE.getKnockbackHandler().getProfileByName(configurationSection.getString(name + ".knockback"));
-            kit = new Kit(name, contents, armor, kitEditContents, icon, excludedArenas, arenaWhiteList, enabled, ranked, combo, sumo, build, spleef, parkour, hcteams, premium, bestOfThree, priority, knockback.orElseGet(() -> EdaterSpigot.INSTANCE.getKnockbackHandler().getActiveProfile()));
+            knockback = Optional.ofNullable(KnockbackConfig.getKbProfileByName(configurationSection.getString(name + ".knockback")));
+            kit = new Kit(name, contents, armor, kitEditContents, icon, excludedArenas, arenaWhiteList, enabled, ranked, combo, sumo, build, spleef, parkour, hcteams, premium, bestOfThree, priority, knockback.orElseGet(KnockbackConfig::getCurrentKb));
             this.kits.put(name, kit);
         });
     }

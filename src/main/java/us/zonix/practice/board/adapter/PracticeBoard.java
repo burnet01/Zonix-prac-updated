@@ -11,13 +11,10 @@ import us.zonix.practice.match.Match;
 import org.bukkit.scoreboard.Team;
 import java.util.UUID;
 import us.zonix.practice.match.MatchTeam;
-import me.maiko.dexter.profile.Profile;
-import me.maiko.dexter.rank.Rank;
 import org.bukkit.scoreboard.Scoreboard;
 import java.util.Iterator;
 import us.zonix.practice.queue.QueueEntry;
 import us.zonix.practice.party.Party;
-import me.maiko.dexter.Dexter;
 import us.zonix.practice.tournament.Tournament;
 import us.zonix.practice.player.PlayerState;
 import java.util.Collection;
@@ -142,21 +139,18 @@ public class PracticeBoard implements BoardAdapter
             for (final Tournament tournament : this.plugin.getTournamentManager().getTournaments().values()) {
                 strings.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "-------------------");
                 strings.add(ChatColor.DARK_RED + "Tournament " + ChatColor.GRAY + "[" + tournament.getTeamSize() + "v" + tournament.getTeamSize() + "]");
-                strings.add(" &c* &fLadder§7: " + tournament.getKitName());
-                strings.add(" &c* &fStage§7: Round #" + tournament.getCurrentRound());
-                strings.add(" &c* &fPlayers§7: " + tournament.getPlayers().size() + "/" + tournament.getSize());
-                strings.add(" &c* &fID§7: " + tournament.getId());
+                strings.add(" &c* &fLadderï¿½7: " + tournament.getKitName());
+                strings.add(" &c* &fStageï¿½7: Round #" + tournament.getCurrentRound());
+                strings.add(" &c* &fPlayersï¿½7: " + tournament.getPlayers().size() + "/" + tournament.getSize());
+                strings.add(" &c* &fIDï¿½7: " + tournament.getId());
                 final int countdown = tournament.getCountdown();
                 if (countdown > 0 && countdown <= 30) {
-                    strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.RED + "Starting§7: " + ChatColor.WHITE + countdown + "s");
+                    strings.add(ChatColor.RED.toString() + ChatColor.BOLD + " * " + ChatColor.RED + "Startingï¿½7: " + ChatColor.WHITE + countdown + "s");
                 }
             }
         }
         if (player.hasMetadata("modmode")) {
             strings.add(ChatColor.DARK_RED + "Silent Mode");
-        }
-        if (Dexter.getInstance().getShutdownTask() != null) {
-            strings.add(ChatColor.RED.toString() + "Reboot§7: " + ChatColor.WHITE + Dexter.getInstance().getShutdownTask().getSecondsUntilShutdown() + "s");
         }
         strings.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "-------------------");
         return strings;
@@ -172,13 +166,6 @@ public class PracticeBoard implements BoardAdapter
         if (green == null) {
             green = scoreboard.registerNewTeam("green");
         }
-        for (final Rank rank : Dexter.getInstance().getRankManager().getRanks()) {
-            Team rankTeam = scoreboard.getTeam(rank.getId());
-            if (rankTeam == null) {
-                rankTeam = scoreboard.registerNewTeam(rank.getId());
-            }
-            rankTeam.setPrefix(rank.getGameColor());
-        }
         red.setPrefix(ChatColor.RED.toString());
         green.setPrefix(ChatColor.GREEN.toString());
         final PlayerData playerData = this.plugin.getPlayerManager().getPlayerData(player.getUniqueId());
@@ -188,15 +175,6 @@ public class PracticeBoard implements BoardAdapter
             }
             for (final String entry : green.getEntries()) {
                 green.removeEntry(entry);
-            }
-            for (final Rank rank2 : Dexter.getInstance().getRankManager().getRanks()) {
-                final Team rankTeam2 = scoreboard.getTeam(rank2.getId());
-                for (final Player online : Bukkit.getOnlinePlayers()) {
-                    final Profile onlineProfile = Profile.getByUuidIfAvailable(online.getUniqueId());
-                    if (onlineProfile != null && onlineProfile.getRank() == rank2 && !rankTeam2.hasEntry(online.getName())) {
-                        rankTeam2.addEntry(online.getName());
-                    }
-                }
             }
             return;
         }
@@ -221,19 +199,8 @@ public class PracticeBoard implements BoardAdapter
                 }
             }
         }
-        if (playerData.getPlayerState() != PlayerState.FIGHTING) {
-            for (final Rank rank3 : Dexter.getInstance().getRankManager().getRanks()) {
-                final Team rankTeam3 = scoreboard.getTeam(rank3.getId());
-                for (final Player online2 : Bukkit.getOnlinePlayers()) {
-                    final Profile onlineProfile2 = Profile.getByUuidIfAvailable(online2.getUniqueId());
-                    if (onlineProfile2 != null && onlineProfile2.getRank() == rank3 && !rankTeam3.hasEntry(online2.getName())) {
-                        rankTeam3.addEntry(online2.getName());
-                    }
-                }
-            }
-        }
     }
-    
+
     private List<String> getGameBoard(final Player player) {
         final List<String> strings = new LinkedList<String>();
         Match match = null;
@@ -250,7 +217,7 @@ public class PracticeBoard implements BoardAdapter
             return strings;
         }
         strings.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "-------------------");
-        strings.add(ChatColor.RED.toString() + "Ladder§7: " + ChatColor.WHITE + ((match.getKit() == null) ? "Unknown" : match.getKit().getName()));
+        strings.add(ChatColor.RED.toString() + "Ladderï¿½7: " + ChatColor.WHITE + ((match.getKit() == null) ? "Unknown" : match.getKit().getName()));
         final PlayerData playerData = this.plugin.getPlayerManager().getPlayerData(player.getUniqueId());
         Player opponentPlayer = null;
         if (!match.isPartyMatch() && !match.isFFA()) {
@@ -260,47 +227,47 @@ public class PracticeBoard implements BoardAdapter
             }
             final MatchTeam opposingTeam = (match.getTeams().get(0).getPlayers().get(0) == player.getUniqueId()) ? match.getTeams().get(1) : match.getTeams().get(0);
             final MatchTeam playerTeam = (match.getTeams().get(0).getPlayers().get(0) == player.getUniqueId()) ? match.getTeams().get(0) : match.getTeams().get(1);
-            strings.add(ChatColor.RED.toString() + "Opponent§7: " + ChatColor.RESET.toString() + ChatColor.WHITE + opponentPlayer.getName());
+            strings.add(ChatColor.RED.toString() + "Opponentï¿½7: " + ChatColor.RESET.toString() + ChatColor.WHITE + opponentPlayer.getName());
             if (match.isBestOfThree()) {
-                strings.add(ChatColor.RED.toString() + "Your Wins§7: " + ChatColor.WHITE + playerTeam.getMatchWins());
-                strings.add(ChatColor.RED.toString() + "Opponent Wins§7: " + ChatColor.WHITE + opposingTeam.getMatchWins());
+                strings.add(ChatColor.RED.toString() + "Your Winsï¿½7: " + ChatColor.WHITE + playerTeam.getMatchWins());
+                strings.add(ChatColor.RED.toString() + "Opponent Winsï¿½7: " + ChatColor.WHITE + opposingTeam.getMatchWins());
             }
         }
         else if (match.isPartyMatch() && !match.isFFA()) {
             final MatchTeam opposingTeam = match.isFFA() ? match.getTeams().get(0) : ((playerData.getTeamID() == 0) ? match.getTeams().get(1) : match.getTeams().get(0));
             final MatchTeam playerTeam = match.getTeams().get(playerData.getTeamID());
-            strings.add(ChatColor.GREEN.toString() + "Your Team§7: " + ChatColor.WHITE + playerTeam.getAlivePlayers().size() + " alive");
-            strings.add(ChatColor.DARK_RED.toString() + "Opponent§7: " + ChatColor.WHITE + opposingTeam.getAlivePlayers().size() + " alive");
+            strings.add(ChatColor.GREEN.toString() + "Your Teamï¿½7: " + ChatColor.WHITE + playerTeam.getAlivePlayers().size() + " alive");
+            strings.add(ChatColor.DARK_RED.toString() + "Opponentï¿½7: " + ChatColor.WHITE + opposingTeam.getAlivePlayers().size() + " alive");
             if (match.isBestOfThree()) {
-                strings.add(ChatColor.RED.toString() + "Team Wins§7: " + ChatColor.WHITE + playerTeam.getMatchWins());
-                strings.add(ChatColor.RED.toString() + "Opponent Wins§7: " + ChatColor.WHITE + opposingTeam.getMatchWins());
+                strings.add(ChatColor.RED.toString() + "Team Winsï¿½7: " + ChatColor.WHITE + playerTeam.getMatchWins());
+                strings.add(ChatColor.RED.toString() + "Opponent Winsï¿½7: " + ChatColor.WHITE + opposingTeam.getMatchWins());
             }
             if (match.getKit().isHcteams() && this.plugin.getPartyManager().getParty(player.getUniqueId()) != null && this.plugin.getPartyManager().getParty(player.getUniqueId()).getBards().contains(player.getUniqueId()) && playerTeam.getAlivePlayers().contains(player.getUniqueId())) {
-                strings.add(ChatColor.RED.toString() + "Bard Energy§7: " + ChatColor.RESET.toString() + ChatColor.WHITE + BardClass.getEnergy().get(player.getName()));
+                strings.add(ChatColor.RED.toString() + "Bard Energyï¿½7: " + ChatColor.RESET.toString() + ChatColor.WHITE + BardClass.getEnergy().get(player.getName()));
             }
         }
         else if (match.isFFA()) {
             final int alive = match.getTeams().get(0).getAlivePlayers().size() - 1;
-            strings.add(ChatColor.RED.toString() + "Remaining§7: " + ChatColor.WHITE + match.getTeams().get(0).getAlivePlayers().size() + " player" + ((alive == 1) ? "" : "s"));
+            strings.add(ChatColor.RED.toString() + "Remainingï¿½7: " + ChatColor.WHITE + match.getTeams().get(0).getAlivePlayers().size() + " player" + ((alive == 1) ? "" : "s"));
         }
         if (opponentPlayer != null && !match.isPartyMatch() && !match.isFFA() && match.getType().isBoth()) {
             final PlayerData opponentData = this.plugin.getPlayerManager().getPlayerData(opponentPlayer.getUniqueId());
             if (opponentData != null) {
                 final String[] oppEloRank = EloRank.getRankByElo(opponentData.getElo(match.getKit().getName())).name().split("_");
                 final String oppEloRankText = StringUtils.capitalize(oppEloRank[0].toLowerCase()) + " " + oppEloRank[1];
-                strings.add(ChatColor.RED.toString() + "Elo§7: " + ChatColor.WHITE + oppEloRankText);
+                strings.add(ChatColor.RED.toString() + "Eloï¿½7: " + ChatColor.WHITE + oppEloRankText);
             }
         }
         if (playerData != null && playerData.getOptions().getScoreboard() == ProfileOptionsItemState.SHOW_PING && opponentPlayer != null && !match.isPartyMatch() && !match.isFFA()) {
             final PlayerData opponentData = this.plugin.getPlayerManager().getPlayerData(opponentPlayer.getUniqueId());
             if (opponentData != null) {
                 strings.add(" ");
-                strings.add(ChatColor.RED.toString() + "Ping§7: " + ChatColor.GREEN + PlayerUtil.getPing(player) + "ms" + ChatColor.GRAY + " \u2503 " + ChatColor.RED + PlayerUtil.getPing(opponentPlayer) + "ms");
+                strings.add(ChatColor.RED.toString() + "Pingï¿½7: " + ChatColor.GREEN + PlayerUtil.getPing(player) + "ms" + ChatColor.GRAY + " \u2503 " + ChatColor.RED + PlayerUtil.getPing(opponentPlayer) + "ms");
             }
         }
         if (match.getStartTime() != null) {
             final String duration = TimeUtils.formatLongIntoMMSS(ChronoUnit.SECONDS.between(match.getStartTime().toInstant(), Instant.now()));
-            strings.add(ChatColor.RED.toString() + "Duration§7: " + ChatColor.WHITE + duration);
+            strings.add(ChatColor.RED.toString() + "Durationï¿½7: " + ChatColor.WHITE + duration);
         }
         strings.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "-------------------");
         return strings;
@@ -311,32 +278,32 @@ public class PracticeBoard implements BoardAdapter
         final Match match = this.plugin.getMatchManager().getSpectatingMatch(spectator.getUniqueId());
         if (match != null) {
             strings.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "-------------------");
-            strings.add(ChatColor.RED.toString() + "Ladder§7: " + ChatColor.WHITE + ((match.getKit() == null) ? "Unknown" : match.getKit().getName()));
+            strings.add(ChatColor.RED.toString() + "Ladderï¿½7: " + ChatColor.WHITE + ((match.getKit() == null) ? "Unknown" : match.getKit().getName()));
             strings.add(" ");
             Player player = null;
             Player opponentPlayer = null;
             if (!match.isPartyMatch() && !match.isFFA()) {
                 player = this.plugin.getServer().getPlayer((UUID)match.getTeams().get(0).getPlayers().get(0));
                 opponentPlayer = this.plugin.getServer().getPlayer((UUID)match.getTeams().get(1).getPlayers().get(0));
-                strings.add(Profile.getByUuidIfAvailable(player.getUniqueId()).getRank().getGameColor() + player.getName() + ChatColor.RED + " (" + PlayerUtil.getPing(player) + "ms)");
+                strings.add(player.getName() + ChatColor.RED + " (" + PlayerUtil.getPing(player) + "ms)");
                 strings.add(ChatColor.RED + "vs");
-                strings.add(Profile.getByUuidIfAvailable(opponentPlayer.getUniqueId()).getRank().getGameColor() + opponentPlayer.getName() + ChatColor.RED + " (" + PlayerUtil.getPing(opponentPlayer) + "ms)");
+                strings.add(opponentPlayer.getName() + ChatColor.RED + " (" + PlayerUtil.getPing(opponentPlayer) + "ms)");
             }
             else if (match.isPartyMatch() && !match.isFFA()) {
                 player = this.plugin.getServer().getPlayer((UUID)match.getTeams().get(0).getPlayers().get(0));
                 opponentPlayer = this.plugin.getServer().getPlayer((UUID)match.getTeams().get(1).getPlayers().get(0));
-                strings.add(Profile.getByUuidIfAvailable(player.getUniqueId()).getRank().getGameColor() + player.getName() + "'s Team" + ChatColor.RED + " (" + PlayerUtil.getPing(player) + "ms)");
+                strings.add(player.getName() + "'s Team" + ChatColor.RED + " (" + PlayerUtil.getPing(player) + "ms)");
                 strings.add(ChatColor.RED + "vs");
-                strings.add(Profile.getByUuidIfAvailable(opponentPlayer.getUniqueId()).getRank().getGameColor() + opponentPlayer.getName() + "'s Team" + ChatColor.RED + " (" + PlayerUtil.getPing(opponentPlayer) + "ms)");
+                strings.add(opponentPlayer.getName() + "'s Team" + ChatColor.RED + " (" + PlayerUtil.getPing(opponentPlayer) + "ms)");
             }
             else if (match.isFFA()) {
                 final int alive = match.getTeams().get(0).getAlivePlayers().size() - 1;
-                strings.add(ChatColor.RED.toString() + "Remaining§7: " + ChatColor.WHITE + match.getTeams().get(0).getAlivePlayers().size() + " player" + ((alive == 1) ? "" : "s"));
+                strings.add(ChatColor.RED.toString() + "Remainingï¿½7: " + ChatColor.WHITE + match.getTeams().get(0).getAlivePlayers().size() + " player" + ((alive == 1) ? "" : "s"));
             }
             if (match.getStartTime() != null) {
                 strings.add(" ");
                 final String duration = TimeUtils.formatLongIntoMMSS(ChronoUnit.SECONDS.between(match.getStartTime().toInstant(), Instant.now()));
-                strings.add(ChatColor.RED.toString() + "Duration§7: " + ChatColor.WHITE + duration);
+                strings.add(ChatColor.RED.toString() + "Durationï¿½7: " + ChatColor.WHITE + duration);
             }
             strings.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "-------------------");
             return strings;
@@ -358,8 +325,8 @@ public class PracticeBoard implements BoardAdapter
     private List<String> getFFABoard(final Player player) {
         final List<String> strings = new LinkedList<String>();
         strings.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "-------------------");
-        strings.add(ChatColor.RED.toString() + "Players§7: " + ChatColor.WHITE + this.plugin.getFfaManager().getTotalPlaying());
-        strings.add(ChatColor.RED.toString() + "Kills§7: " + ChatColor.WHITE + this.plugin.getFfaManager().getKillStreakTracker().getOrDefault(player.getUniqueId(), 0));
+        strings.add(ChatColor.RED.toString() + "Playersï¿½7: " + ChatColor.WHITE + this.plugin.getFfaManager().getTotalPlaying());
+        strings.add(ChatColor.RED.toString() + "Killsï¿½7: " + ChatColor.WHITE + this.plugin.getFfaManager().getKillStreakTracker().getOrDefault(player.getUniqueId(), 0));
         strings.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "-------------------");
         return strings;
     }

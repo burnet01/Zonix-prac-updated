@@ -1,10 +1,10 @@
 package us.zonix.practice.kit;
 
-import net.edater.spigot.EdaterSpigot;
+import com.windpvp.windspigot.knockback.KnockbackConfig;
 import java.util.ArrayList;
 import us.zonix.practice.bots.ZonixBot;
 import org.bukkit.entity.Player;
-import net.edater.spigot.knockback.KnockbackProfile;
+import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
 import java.util.List;
 import org.bukkit.inventory.ItemStack;
 
@@ -221,7 +221,7 @@ public class Kit
         this.premium = false;
         this.bestOfThree = false;
         this.priority = 0;
-        this.knockbackProfile = EdaterSpigot.INSTANCE.getKnockbackHandler().getActiveProfile();
+        this.knockbackProfile = KnockbackConfig.getCurrentKb();
         this.name = name;
         this.contents = contents;
         this.armor = armor;
@@ -260,7 +260,7 @@ public class Kit
         this.premium = false;
         this.bestOfThree = false;
         this.priority = 0;
-        this.knockbackProfile = EdaterSpigot.INSTANCE.getKnockbackHandler().getActiveProfile();
+        this.knockbackProfile = KnockbackConfig.getCurrentKb();
         this.name = name;
     }
 }

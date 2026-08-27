@@ -7,7 +7,7 @@ import us.zonix.practice.player.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import us.zonix.practice.player.PlayerState;
-import me.maiko.dexter.util.CC;
+import us.zonix.practice.util.CC;
 import us.zonix.practice.settings.item.ProfileOptionsItemState;
 import us.zonix.practice.settings.item.ProfileOptionsItem;
 import java.util.Arrays;
