@@ -171,7 +171,7 @@ public class Practice extends JavaPlugin
     }
     
     private void registerCommands() {
-        Arrays.asList(new SettingsCommand(), new ResetStatsCommand(), new JoinEventCommand(), new LeaveEventCommand(), new StatusEventCommand(), new HostCommand(), new EventManagerCommand(), new AcceptCommand(), new SunsetCommand(), new CoinEventCommand(), new SilentCommand(), new ArenaCommand(), new KitCommand(), new NightCommand(), new FlyCommand(), new PartyCommand(), new PartyCommand.HCTeamsCommand(), new DuelCommand(), new SpectateCommand(), new DayCommand(), new StatsCommand(), new SpectateEventCommand(), new InvCommand(), new SpawnsCommand(), new WarpCommand(), new VisibilityCommand(), new LeaderboardCommand(), new TournamentCommand(), new RegionLockCommand()).forEach(command -> this.registerCommand(command, this.getName()));
+        Arrays.asList(new SettingsCommand(), new ResetStatsCommand(), new JoinEventCommand(), new LeaveEventCommand(), new StatusEventCommand(), new HostCommand(), new EventManagerCommand(), new AcceptCommand(), new SunsetCommand(), new CoinEventCommand(), new SilentCommand(), new ArenaCommand(), new KitCommand(), new NightCommand(), new FlyCommand(), new PartyCommand(), new PartyCommand.HCTeamsCommand(), new DuelCommand(), new SpectateCommand(), new DayCommand(), new StatsCommand(), new SpectateEventCommand(), new InvCommand(), new SpawnsCommand(), new WarpCommand(), new VisibilityCommand(), new LeaderboardCommand(), new TournamentCommand(), new RegionLockCommand(), new us.zonix.practice.commands.train.TrainCommand()).forEach(command -> this.registerCommand(command, this.getName()));
     }
     
     private void registerListeners() {
