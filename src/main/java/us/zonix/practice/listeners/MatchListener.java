@@ -149,12 +149,8 @@ public class MatchListener implements Listener
         match.broadcast(ChatColor.GREEN + "Starting next round.");
         match.setMatchState(MatchState.RESTARTING);
         match.setCountdown(6);
-        final Iterator<Player> iterator6;
-        Player matchPlayer;
         this.plugin.getServer().getScheduler().runTaskLater((Plugin)this.plugin, () -> match.spectatorPlayers().forEach(spectator -> {
-            matchPlayers.iterator();
-            while (iterator6.hasNext()) {
-                matchPlayer = iterator6.next();
+            for (final Player matchPlayer : matchPlayers) {
                 spectator.showPlayer(matchPlayer);
             }
         }), 45L);
@@ -182,22 +178,16 @@ public class MatchListener implements Listener
             event.getWinningTeam().players().forEach(player -> player.setKnockbackProfile(knockbackProfile));
         }
         if (match.isFFA()) {
-            final Player winner = this.plugin.getServer().getPlayer((UUID)event.getWinningTeam().getAlivePlayers().get(0));
-            final KnockbackProfile knockbackProfile2;
-            final Match match2;
-            final Player player2;
-            final Clickable clickable;
-            final Clickable clickable2;
             event.getWinningTeam().players().forEach(player -> {
-                player.setKnockbackProfile(knockbackProfile2);
-                if (!match2.hasSnapshot(player.getUniqueId())) {
-                    match2.addSnapshot(player);
+                player.setKnockbackProfile(knockbackProfile);
+                if (!match.hasSnapshot(player.getUniqueId())) {
+                    match.addSnapshot(player);
                 }
-                if (player.getUniqueId() == player2.getUniqueId()) {
-                    clickable.add(ChatColor.GRAY + player.getName() + " ", ChatColor.GRAY + "Click to view inventory", "/inventory " + match2.getSnapshot(player.getUniqueId()).getSnapshotId());
+                if (player.getUniqueId() == event.getWinningTeam().getAlivePlayers().get(0)) {
+                    winnerClickable.add(ChatColor.GRAY + player.getName() + " ", ChatColor.GRAY + "Click to view inventory", "/inventory " + match.getSnapshot(player.getUniqueId()).getSnapshotId());
                 }
                 else {
-                    clickable2.add(ChatColor.GRAY + player.getName() + " ", ChatColor.GRAY + "Click to view inventory", "/inventory " + match2.getSnapshot(player.getUniqueId()).getSnapshotId());
+                    loserClickable.add(ChatColor.GRAY + player.getName() + " ", ChatColor.GRAY + "Click to view inventory", "/inventory " + match.getSnapshot(player.getUniqueId()).getSnapshotId());
                 }
                 return;
             });
@@ -215,24 +205,20 @@ public class MatchListener implements Listener
         }
         else {
             final Map<UUID, InventorySnapshot> inventorySnapshotMap = new LinkedHashMap<UUID, InventorySnapshot>();
-            final Match match3;
-            final KnockbackProfile knockbackProfile3;
-            final boolean onWinningTeam;
-            final Map<UUID, InventorySnapshot> map;
-            final Clickable clickable3;
-            final Clickable clickable4;
+            final Match match3 = match;
+            final boolean[] onWinningTeamFlag = new boolean[1];
             match.getTeams().forEach(team -> team.players().forEach(player -> {
                 if (!match3.hasSnapshot(player.getUniqueId())) {
                     match3.addSnapshot(player);
                 }
-                player.setKnockbackProfile(knockbackProfile3);
-                onWinningTeam = (this.plugin.getPlayerManager().getPlayerData(player.getUniqueId()).getTeamID() == event.getWinningTeam().getTeamID());
-                map.put(player.getUniqueId(), match3.getSnapshot(player.getUniqueId()));
-                if (onWinningTeam) {
-                    clickable3.add(ChatColor.GRAY + player.getName() + " ", ChatColor.GRAY + "Click to view inventory", "/inventory " + match3.getSnapshot(player.getUniqueId()).getSnapshotId());
+                player.setKnockbackProfile(knockbackProfile);
+                onWinningTeamFlag[0] = (this.plugin.getPlayerManager().getPlayerData(player.getUniqueId()).getTeamID() == event.getWinningTeam().getTeamID());
+                inventorySnapshotMap.put(player.getUniqueId(), match3.getSnapshot(player.getUniqueId()));
+                if (onWinningTeamFlag[0]) {
+                    winnerClickable.add(ChatColor.GRAY + player.getName() + " ", ChatColor.GRAY + "Click to view inventory", "/inventory " + match3.getSnapshot(player.getUniqueId()).getSnapshotId());
                 }
                 else {
-                    clickable4.add(ChatColor.GRAY + player.getName() + " ", ChatColor.GRAY + "Click to view inventory", "/inventory " + match3.getSnapshot(player.getUniqueId()).getSnapshotId());
+                    loserClickable.add(ChatColor.GRAY + player.getName() + " ", ChatColor.GRAY + "Click to view inventory", "/inventory " + match3.getSnapshot(player.getUniqueId()).getSnapshotId());
                 }
                 player.setMaximumNoDamageTicks(20);
             }));

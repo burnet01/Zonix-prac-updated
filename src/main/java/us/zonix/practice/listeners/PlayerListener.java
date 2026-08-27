@@ -481,7 +481,6 @@ public class PlayerListener implements Listener
                                 }
                                 break;
                             }
-                            break;
                         }
                         case SPECTATING: {
                             if (item == null) {

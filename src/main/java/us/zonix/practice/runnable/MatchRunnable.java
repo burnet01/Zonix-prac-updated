@@ -72,19 +72,8 @@ public class MatchRunnable extends BukkitRunnable
                     this.plugin.getTournamentManager().removeTournamentMatch(this.match);
                     this.match.getRunnables().forEach(id -> this.plugin.getServer().getScheduler().cancelTask((int)id));
                     this.match.getEntitiesToRemove().forEach(Entity::remove);
-                    final PlayerManager playerManager;
-                    final Stream<Player> stream;
-                    this.match.getTeams().forEach(team -> {
-                        team.alivePlayers();
-                        this.plugin.getPlayerManager();
-                        Objects.requireNonNull(playerManager);
-                        stream.forEach(playerManager::sendToSpawnAndReset);
-                        return;
-                    });
-                    final Stream<Player> spectatorPlayers = this.match.spectatorPlayers();
-                    final MatchManager matchManager = this.plugin.getMatchManager();
-                    Objects.requireNonNull(matchManager);
-                    spectatorPlayers.forEach(matchManager::removeSpectator);
+                    this.match.getTeams().forEach(team -> team.alivePlayers().forEach(player -> this.plugin.getPlayerManager().sendToSpawnAndReset(player)));
+                    this.match.spectatorPlayers().forEach(player -> this.plugin.getMatchManager().removeSpectator(player));
                     if (this.match.getKit().isBuild() || this.match.getKit().isSpleef()) {
                         new MatchResetRunnable(this.match).runTask((Plugin)this.plugin);
                     }

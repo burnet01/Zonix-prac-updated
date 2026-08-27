@@ -132,7 +132,7 @@ public class EntityListener implements Listener
                                 final WoolMixUpEvent woolMixUpEvent = (WoolMixUpEvent)event;
                                 woolMixUpEvent.onDeath().accept(player);
                             }
-                            if (e.getCause() == EntityDamageEvent.DamageCause.FALL) {
+                            else if (e.getCause() == EntityDamageEvent.DamageCause.FALL) {
                                 final WoolMixUpEvent woolMixUpEvent = (WoolMixUpEvent)event;
                                 woolMixUpEvent.onDeath().accept(player);
                             }
@@ -145,7 +145,6 @@ public class EntityListener implements Listener
                         }
                         break;
                     }
-                    break;
                 }
                 case FFA: {
                     e.setCancelled(false);
