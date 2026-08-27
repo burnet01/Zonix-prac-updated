@@ -31,11 +31,11 @@ public class CPSHandler implements PacketListener
             final PlayerData playerData = this.plugin.getPlayerManager().getPlayerData(playerConnection.getPlayer().getUniqueId());
             playerData.setCurrentCps(playerData.getCurrentCps() + 1);
         }
-        return false;
+        return true;
     }
 
     @Override
     public boolean onSentPacket(final PlayerConnection playerConnection, final Packet packet) {
-        return false;
+        return true;
     }
 }

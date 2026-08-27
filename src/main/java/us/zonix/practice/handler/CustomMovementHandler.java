@@ -44,7 +44,7 @@ public class CustomMovementHandler implements MovementListener
     @Override
     public boolean updateLocation(final Player player, final Location to, final Location from, final PacketPlayInFlying packetPlayInFlying) {
         this.handleUpdateLocation(player, to, from, packetPlayInFlying);
-        return false;
+        return true;
     }
 
     private void handleUpdateLocation(final Player player, final Location to, final Location from, final PacketPlayInFlying packetPlayInFlying) {
@@ -189,7 +189,7 @@ public class CustomMovementHandler implements MovementListener
     
     @Override
     public boolean updateRotation(final Player player, final Location location, final Location location1, final PacketPlayInFlying packetPlayInFlying) {
-        return false;
+        return true;
     }
     
     private void teleportToSpawnOrCheckpoint(final Match match, final Player player) {
