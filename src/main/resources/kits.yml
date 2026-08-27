@@ -568,7 +568,7 @@ kits:
         lore:
         - '§eIn Game: §f0'
         - '§eIn Queue: §f0'
-    excludedArenas: []
+    excludedArenas:� []
     arenaWhitelist: []
     enabled: true
     ranked: true

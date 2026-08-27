@@ -20,7 +20,7 @@ public class ConfigFile
         if (!this.file.getParentFile().exists()) {
             this.file.getParentFile().mkdir();
         }
-        if (!this.file.exists() || this.file.length() == 0L) {
+        if (!this.file.exists()) {
             if (plugin.getResource(name + ".yml") != null) {
                 plugin.saveResource(name + ".yml", false);
             }
@@ -33,7 +33,35 @@ public class ConfigFile
                 }
             }
         }
-        this.configuration = YamlConfiguration.loadConfiguration(this.file);
+        this.configuration = new YamlConfiguration();
+        try {
+            this.configuration.load(this.file);
+        }
+        catch (Exception ex) {
+            final String raw = this.readFile();
+            if (raw != null && raw.indexOf('\u00a0') >= 0) {
+                plugin.getLogger().warning(name + ".yml contained non-breaking spaces; auto-repairing.");
+                try {
+                    this.configuration.loadFromString(raw.replace('\u00a0', ' '));
+                }
+                catch (Exception e2) {
+                    e2.printStackTrace();
+                }
+            }
+            else {
+                plugin.getLogger().warning("Could not load " + name + ".yml: " + ex.getMessage());
+            }
+        }
+    }
+
+    private String readFile() {
+        try {
+            return new String(java.nio.file.Files.readAllBytes(this.file.toPath()), java.nio.charset.StandardCharsets.UTF_8);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
     public double getDouble(final String path) {
